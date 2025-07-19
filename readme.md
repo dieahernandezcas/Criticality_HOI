@@ -24,21 +24,19 @@ This project aims to:
 
 The repository is organized as follows:
 
-.
 Repo_Root/
-├── data/              # All generated and input data files
-│   ├── hcp/           # HCP dataset with Cmat and Dmat (loaded by neurolib)
-│   └── simulated/     # Simulated patient data (e.g., patient_001_healthy_critical_raw.pkl)
-├── scripts/           # Python scripts for simulations and analysis
-│   ├── 01_WilsonCowan_1Chanels.py         # Script for single-channel WC model dynamic regime exploration.
-│   ├── 02_WilsonCowan_80Chanels.py        # Script for 80-channel WC model exploration (e.g., specific conditions).
-│   ├── 03_WilsonCowan_80Chanels_patients.py # Script for generating and saving data for multiple patients (200) across various conditions.
-│   ├── 04_avalanches_detection.py         # Script for detecting and analyzing brain avalanches from binarized data.
-│   └── 05_HOI_Cumulants.py                # Script for calculating Higher-Order Interactions (HOI) via cumulants.
-├── results/           # Outputs from analyses (e.g., avalanche statistics, HOI results, plots).
-├── .gitignore         # Specifies intentionally untracked files (e.g., virtual environments, large data files)
-└── README.md          # This file
-
+├── data/                     # Input and generated data files
+│   ├── hcp/                  # HCP dataset (Cmat and Dmat, loaded by neurolib)
+│   └── simulated/            # Simulated patient data (e.g., patient_001_healthy_critical_raw.pkl)
+├── scripts/                  # Python scripts for simulations and analysis
+│   ├── 01_WilsonCowan_1Chanels.py          # Single-channel WC model regime exploration
+│   ├── 02_WilsonCowan_80Chanels.py         # 80-channel WC model exploration (e.g., specific conditions)
+│   ├── 03_WilsonCowan_80Chanels_patients.py# Data generation for multiple patients (200) across conditions
+│   ├── 04_avalanches_detection.py          # Brain avalanche detection and analysis
+│   └── 05_HOI_Cumulants.py                 # Higher-Order Interactions (HOI) calculation via cumulants
+├── results/                  # Analysis outputs (e.g., avalanche stats, HOI results, plots)
+├── .gitignore                # Ignored files (e.g., virtual envs, large data files)
+└── README.md                 # Project documentation
 
 ---
 
@@ -113,10 +111,29 @@ Contributions are welcome. If you wish to contribute, please open an issue or su
 
 ## References
 
-* **Wilson-Cowan Model:** Wilson, H. R., & Cowan, J. D. (1972). Excitatory and inhibitory interactions in localized populations of model neurons. *Biophysical Journal, 12*(1), 1-24.
-* **Neurolib:** For more details on the `neurolib` library, refer to its [official documentation](https://neurolib-dev.net/docs/).
-* **Brain Criticality / Avalanches:** Beggs, J. M., & Plenz, D. (2003). Neuronal avalanches in neocortical circuits. *Journal of Neuroscience, 23*(34), 11167-11177.
-* **Higher-Order Interactions:** (Relevant papers on HOI and cumulants can be added here once specific methods are chosen).
+- **Neurolib:**  
+  Official documentation of the `neurolib` library:  
+  [https://neurolib-dev.net/docs/](https://neurolib-dev.net/docs/)
+
+- **Wilson-Cowan Model:**  
+  De Candia, Antonio, et al. *Critical Behaviour of the Stochastic Wilson-Cowan Model.*  
+  *PLOS Computational Biology,* 17(8), e1008884, 2021.  
+  [https://doi.org/10.1371/journal.pcbi.1008884](https://doi.org/10.1371/journal.pcbi.1008884)
+
+- **Wilson-Cowan Model and Criticality:**  
+  Alvankar Golpayegan, Hanieh, and Antonio De Candia. *Bistability and Criticality in the Stochastic Wilson-Cowan Model.*  
+  *Physical Review E,* 107(3), 034404, 2023.  
+  [https://doi.org/10.1103/PhysRevE.107.034404](https://doi.org/10.1103/PhysRevE.107.034404)
+
+- **Brain Criticality / Avalanches:**  
+  Larremore, Daniel B., et al. *Statistical Properties of Avalanches in Networks.*  
+  *Physical Review E,* 85(6), 066131, 2012.  
+  [https://doi.org/10.1103/PhysRevE.85.066131](https://doi.org/10.1103/PhysRevE.85.066131)
+
+- **Higher-Order Interactions:**  
+  Hindriks, Rikkert, et al. *Higher‐order Functional Connectivity Analysis of Resting‐state Functional Magnetic Resonance Imaging Data Using Multivariate Cumulants.*  
+  *Human Brain Mapping,* 45(5), e26663, 2024.  
+  [https://doi.org/10.1002/hbm.26663](https://doi.org/10.1002/hbm.26663)
 
 ---
 
@@ -124,7 +141,7 @@ Contributions are welcome. If you wish to contribute, please open an issue or su
 
 If you have questions, comments, or suggestions about this project, please contact:
 
-Diego Alejandro Hernández Castañeda - dieahernandezcas@unal.edu.co
-Francisco Albeiro Gomez Jaramillo - fagomezj@unal.edu.co
-Prejaas Kavish Baldewpersad Tewarie - Prejaas.K.B.Tewarie@cervo.ulaval.ca
+* Diego Alejandro Hernández Castañeda - dieahernandezcas@unal.edu.co
+* Francisco Albeiro Gomez Jaramillo - fagomezj@unal.edu.co
+* Prejaas Kavish Baldewpersad Tewarie - Prejaas.K.B.Tewarie@cervo.ulaval.ca
  
