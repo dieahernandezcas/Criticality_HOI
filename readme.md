@@ -23,7 +23,7 @@ This project aims to:
 ## Folder Structure
 
 The repository is organized as follows:
-
+```
 Repo_Root/
 ├── data/                     # Input and generated data files
 │   ├── hcp/                  # HCP dataset (Cmat and Dmat, loaded by neurolib)
@@ -37,7 +37,7 @@ Repo_Root/
 ├── results/                  # Analysis outputs (e.g., avalanche stats, HOI results, plots)
 ├── .gitignore                # Ignored files (e.g., virtual envs, large data files)
 └── README.md                 # Project documentation
-
+```
 ---
 
 ## Setup and Installation
