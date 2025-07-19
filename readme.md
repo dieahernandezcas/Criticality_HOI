@@ -12,17 +12,18 @@ This project focuses on applying the **Wilson-Cowan (WC) model**, implemented in
 
 This project aims to:
 
-1.  Simulate the dynamics of excitatory and inhibitory neural populations in both single-node and multi-node (80-channel) configurations.
-2.  Explore how varying key WC model parameters (e.g., external input, global coupling) can lead to different brain activity regimes.
-3.  Generate and store simulated data (continuous and binarized neural activity) for a cohort of 200 "patients," representing distinct clinical conditions.
-4.  Perform advanced analyses on the simulated data, including **brain avalanche detection** and calculation of **Higher-Order Interactions (HOI) via Cumulants**.
-5.  Provide a synthetic dataset and analysis tools useful for studying complex brain dynamics and developing new methods for neural data analysis.
+1. Simulate the dynamics of excitatory and inhibitory neural populations in both single-node and multi-node (80-channel) configurations.
+2. Explore how varying key WC model parameters (e.g., external input, global coupling) can lead to different brain activity regimes.
+3. Generate and store simulated data (continuous and binarized neural activity) for a cohort of 200 "patients," representing distinct clinical conditions.
+4. Perform advanced analyses on the simulated data, including **brain avalanche detection** and calculation of **Higher-Order Interactions (HOI) via Cumulants**.
+5. Provide a synthetic dataset and analysis tools useful for studying complex brain dynamics and developing new methods for neural data analysis.
 
 ---
 
 ## Folder Structure
 
 The repository is organized as follows:
+
 ```
 Repo_Root/
 ├── data/                     # Input and generated data files
@@ -38,17 +39,18 @@ Repo_Root/
 ├── .gitignore                # Ignored files (e.g., virtual envs, large data files)
 └── README.md                 # Project documentation
 ```
+
 ---
 
 ## Setup and Installation
 
-1.  **Clone the repository:**
+1. **Clone the repository:**
     ```bash
     git clone [YOUR_REPOSITORY_URL]
     cd [your_repository_name]
     ```
 
-2.  **Create a virtual environment (recommended):**
+2. **Create a virtual environment (recommended):**
     ```bash
     python -m venv venv
     # On Windows:
@@ -57,8 +59,8 @@ Repo_Root/
     source venv/bin/activate
     ```
 
-3.  **Install dependencies:**
-    The core project depends on `neurolib`, `numpy`, `matplotlib`, and `pathlib`. Additional libraries might be required for specific analysis scripts (e.g., `scipy` for cumulants). Ensure you have `neurolib` installed. You can create a `requirements.txt` file by running `pip freeze > requirements.txt` after installing the necessary libraries.
+3. **Install dependencies:**
+    The project requires `jupyter`, `neurolib`, `numpy`, `matplotlib`, and `pathlib`. Additional libraries might be required for specific analysis notebooks (e.g., `scipy` for cumulants).  
     ```bash
     pip install -r requirements.txt
     ```
@@ -68,38 +70,25 @@ Repo_Root/
 
 ## Usage
 
-The `scripts/` directory contains the main executables for this project. It's recommended to run them in the order of their numbering for a full pipeline.
+The `notebooks/` directory contains the main Jupyter notebooks. It's recommended to run them sequentially for a complete analysis pipeline.
 
-1.  **Explore Single-Channel Wilson-Cowan Dynamics:**
-    * Run `01_WilsonCowan_1Chanels.py` to understand the fundamental behavior of a single WC node under different external input regimes (subcritical, critical, hypercritical). This script generates plots for visualization.
-    ```bash
-    python scripts/01_WilsonCowan_1Chanels.py
-    ```
+1. **Explore Single-Channel Wilson-Cowan Dynamics:**  
+   Open `01_WilsonCowan_1Channel.ipynb` in Jupyter Notebook or Jupyter Lab.  
+   This notebook explores the fundamental behavior of a single WC node under different external input regimes (subcritical, critical, hypercritical) and generates visualizations.
 
-2.  **Explore 80-Channel Wilson-Cowan Dynamics (Individual Conditions):**
-    * Run `02_WilsonCowan_80Chanels.py` to simulate the 80-channel network for specific, individual neurological conditions. This script also generates plots.
-    ```bash
-    python scripts/02_WilsonCowan_80Chanels.py
-    ```
+2. **Explore 80-Channel Wilson-Cowan Dynamics (Individual Conditions):**  
+   Open `02_WilsonCowan_80Channels.ipynb` to simulate the 80-channel network for specific neurological conditions.
 
-3.  **Generate Patient Data:**
-    * Execute `03_WilsonCowan_80Chanels_patients.py` to perform the full simulation pipeline for 200 patients across various conditions. This script will generate and save the raw and binarized simulated data files.
-    ```bash
-    python scripts/03_WilsonCowan_80Chanels_patients.py
-    ```
-    The generated `.pkl` files (e.g., `patient_001_healthy_critical_raw.pkl`, `patient_001_healthy_critical_binarized.pkl`) will be stored in the `data/simulated/` directory.
+3. **Generate Patient Data:**  
+   Use `03_WilsonCowan_80Channels_patients.ipynb` to run the full simulation pipeline for 200 patients across various conditions.  
+   Generated `.pkl` files (e.g., `patient_001_healthy_critical_raw.pkl`) will be saved in `data/simulated/`.
 
-4.  **Detect Brain Avalanches:**
-    * After generating patient data, run `04_avalanches_detection.py`. This script will load the binarized data from `data/simulated/` and perform avalanche detection and analysis. Results (e.g., avalanche size/duration distributions) will be saved in `results/`.
-    ```bash
-    python scripts/04_avalanches_detection.py
-    ```
+4. **Detect Brain Avalanches:**  
+   After generating patient data, open `04_avalanches_detection.ipynb` to detect and analyze brain avalanches.  
+   Results (e.g., avalanche size/duration distributions) will be saved in `results/`.
 
-5.  **Calculate Higher-Order Interactions (HOI) via Cumulants:**
-    * Finally, run `05_HOI_Cumulants.py`. This script will load the appropriate simulated data (likely raw or binarized, depending on the HOI method) and compute higher-order interactions using cumulants. Results will be stored in `results/`.
-    ```bash
-    python scripts/05_HOI_Cumulants.py
-    ```
+5. **Calculate Higher-Order Interactions (HOI):**  
+   Finally, use `05_HOI_Cumulants.ipynb` to compute higher-order interactions using cumulants.
 
 ---
 
@@ -140,7 +129,6 @@ Contributions are welcome. If you wish to contribute, please open an issue or su
 ## Contact
 
 If you have questions, comments, or suggestions about this project, please contact:
-
 
 - **Diego Alejandro Hernández Castañeda**  
   PhD Student, Systems and Computing Engineering  
