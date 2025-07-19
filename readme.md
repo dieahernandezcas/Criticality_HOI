@@ -112,8 +112,8 @@ Contributions are welcome. If you wish to contribute, please open an issue or su
 ## References
 
 - **Neurolib:**  
-  Official documentation of the `neurolib` library:  
-  [https://neurolib-dev.net/docs/](https://neurolib-dev.net/docs/)
+  Official documentation of the `neurolib` + Wilson-Cowan library:  
+  [https://neurolib-dev.github.io/examples/example-0.4-wc-minimal/](https://neurolib-dev.github.io/examples/example-0.4-wc-minimal/)
 
 - **Wilson-Cowan Model:**  
   De Candia, Antonio, et al. *Critical Behaviour of the Stochastic Wilson-Cowan Model.*  
