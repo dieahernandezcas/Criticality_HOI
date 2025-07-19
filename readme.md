@@ -141,7 +141,18 @@ Contributions are welcome. If you wish to contribute, please open an issue or su
 
 If you have questions, comments, or suggestions about this project, please contact:
 
-* Diego Alejandro Hernández Castañeda - dieahernandezcas@unal.edu.co
-* Francisco Albeiro Gomez Jaramillo - fagomezj@unal.edu.co
-* Prejaas Kavish Baldewpersad Tewarie - Prejaas.K.B.Tewarie@cervo.ulaval.ca
- 
+
+- **Diego Alejandro Hernández Castañeda**  
+  PhD Student, Systems and Computing Engineering  
+  Universidad Nacional de Colombia  
+  Email: dieahernandezcas@unal.edu.co  
+
+- **Prof. Francisco Albeiro Gómez Jaramillo, PhD**  
+  Associate Professor, Mathematics Department  
+  Universidad Nacional de Colombia  
+  Email: fagomezj@unal.edu.co  
+
+- **Prof. Prejaas Kavish Baldewpersad Tewarie, PhD**  
+  Clinical Physician and Teaching Assistant Grant Holder  
+  CERVO Brain Research Centre, Université Laval  
+  Email: Prejaas.KBTewarie@cervo.ulaval.ca  
