@@ -30,11 +30,12 @@ Repo_Root/
 │   ├── hcp/                  # HCP dataset (Cmat and Dmat, loaded by neurolib)
 │   └── simulated/            # Simulated patient data (e.g., patient_001_healthy_critical_raw.pkl)
 ├── scripts/                  # Python scripts for simulations and analysis
-│   ├── 01_WilsonCowan_1Chanels.py          # Single-channel WC model regime exploration
-│   ├── 02_WilsonCowan_80Chanels.py         # 80-channel WC model exploration (e.g., specific conditions)
-│   ├── 03_WilsonCowan_80Chanels_patients.py# Data generation for multiple patients (200) across conditions
-│   ├── 04_avalanches_detection.py          # Brain avalanche detection and analysis
-│   └── 05_HOI_Cumulants.py                 # Higher-Order Interactions (HOI) calculation via cumulants
+│   ├── 01_WilsonCowan_1Chanels.py                  # Single-channel WC model regime exploration
+│   ├── 02_WilsonCowan_80Chanels.py                 # 80-channel WC model exploration (e.g., specific conditions)
+│   ├── 03_WilsonCowan_80Chanels_patients.py        # Data generation for multiple patients (200) across conditions
+│   ├── 04_WilsonCowan_80Chanels_Criticality.ipynb  # Exploration of 80-channel WC model for criticality
+│   ├── 05_Criticality_Avalanches.ipynb             # Brain avalanche detection and analysis from binarized data
+│   └── 06_Avalanches_Cumulants.ipynb               # Higher-Order Interactions (HOI) calculation via cumulants
 ├── results/                  # Analysis outputs (e.g., avalanche stats, HOI results, plots)
 ├── .gitignore                # Ignored files (e.g., virtual envs, large data files)
 └── README.md                 # Project documentation
