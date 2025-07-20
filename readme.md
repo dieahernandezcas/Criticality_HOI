@@ -1,6 +1,8 @@
 # Brain State Modeling and Synthetic Data Generation with Wilson-Cowan and Neurolib
 
+<p align="justify">
 Source code for simulating different brain states using the Wilson-Cowan population model and generating synthetic neural data, followed by analyses including avalanche detection and higher-order interactions.
+</p>
 
 ![Status Badge](https://img.shields.io/badge/Status-In%20Development-yellow) ![License Badge](https://img.shields.io/badge/License-MIT-blue) ![Version Badge](https://img.shields.io/badge/Version-1.0.0-informational)
 
@@ -8,14 +10,18 @@ Source code for simulating different brain states using the Wilson-Cowan populat
 
 ## Project Overview
 
-This project focuses on applying the **Wilson-Cowan (WC) model**, implemented in the `neurolib` library, to simulate neural activity across a whole-brain network. The main goal is to generate **synthetic brain signals** representing various neurological states (e.g., healthy, coma, brain death) by adjusting WC model parameters. These simulations are performed on an **80-channel structural connectivity matrix** derived from the Human Connectome Project (HCP) dataset.
+<p align="justify">
+This project focuses on applying the <b>Wilson-Cowan (WC) model</b>, implemented in the <code>neurolib</code> library, to simulate neural activity across a whole-brain network. The main goal is to generate <b>synthetic brain signals</b> representing various neurological states (e.g., healthy, coma, brain death) by adjusting WC model parameters. These simulations are performed on an <b>80-channel structural connectivity matrix</b> derived from the Human Connectome Project (HCP) dataset.
+</p>
 
+<p align="justify">
 This project aims to:
+</p>
 
 1. Simulate the dynamics of excitatory and inhibitory neural populations in both single-node and multi-node (80-channel) configurations.
 2. Explore how varying key WC model parameters (e.g., external input, global coupling) can lead to different brain activity regimes.
 3. Generate and store simulated data (continuous and binarized neural activity) for a cohort of 200 "patients," representing distinct clinical conditions.
-4. Perform advanced analyses on the simulated data, including **brain avalanche detection** and calculation of **Higher-Order Interactions (HOI) via Cumulants**.
+4. Perform advanced analyses on the simulated data, including <b>brain avalanche detection</b> and calculation of <b>Higher-Order Interactions (HOI) via Cumulants</b>.
 5. Provide a synthetic dataset and analysis tools useful for studying complex brain dynamics and developing new methods for neural data analysis.
 
 ---
@@ -61,7 +67,9 @@ Repo_Root/
     ```
 
 3. **Install dependencies:**
-    The project requires `jupyter`, `neurolib`, `numpy`, `matplotlib`, and `pathlib`. Additional libraries might be required for specific analysis notebooks (e.g., `scipy` for cumulants).  
+    <p align="justify">
+    The project requires <code>jupyter</code>, <code>neurolib</code>, <code>numpy</code>, <code>matplotlib</code>, and <code>pathlib</code>. Additional libraries might be required for specific analysis notebooks (e.g., <code>scipy</code> for cumulants).
+    </p>
     ```bash
     pip install -r requirements.txt
     ```
@@ -71,44 +79,55 @@ Repo_Root/
 
 ## Usage
 
-The `notebooks/` directory contains the main Jupyter notebooks. It's recommended to run them sequentially for a complete analysis pipeline.
+<p align="justify">
+The <code>notebooks/</code> directory contains the main Jupyter notebooks. It's recommended to run them sequentially for a complete analysis pipeline.
+</p>
 
-1.  **Explore Single-Channel Wilson-Cowan Dynamics:**
-    Open `01_WilsonCowan_1Chanels.ipynb` in Jupyter Notebook or Jupyter Lab.
-    This notebook explores the fundamental behavior of a single Wilson-Cowan (WC) neural node under different external input regimes (subcritical, critical, hypercritical) and generates visualizations. It's a foundational step to understand the model's dynamics.
+### 1. **Explore Single-Channel Wilson-Cowan Dynamics:**
+<p align="justify">
+Open <code>01_WilsonCowan_1Chanels.ipynb</code> in Jupyter Notebook or Jupyter Lab.  
+This notebook explores the fundamental behavior of a single Wilson-Cowan (WC) neural node under different external input regimes (subcritical, critical, hypercritical) and generates visualizations. It's a foundational step to understand the model's dynamics.
+</p>
 
-2.  **Explore 80-Channel Wilson-Cowan Dynamics (Individual Conditions):**
-    Open `02_WilsonCowan_80Chanels.ipynb` in Jupyter Notebook or Jupyter Lab.
-    This notebook allows you to simulate the 80-channel WC network for specific neurological conditions or parameter sets, providing insights into network-level behavior.
+### 2. **Explore 80-Channel Wilson-Cowan Dynamics (Individual Conditions):**
+<p align="justify">
+Open <code>02_WilsonCowan_80Chanels.ipynb</code> to simulate the 80-channel WC network for specific neurological conditions or parameter sets.
+</p>
 
-3.  **Generate Patient Data:**
-    Open `03_WilsonCowan_80Chanels_patients.ipynb` in Jupyter Notebook or Jupyter Lab.
-    This notebook is crucial for running the full simulation pipeline to generate raw EEG-like data for multiple synthetic patients (e.g., 200) across various conditions. The generated `.pkl` files (e.g., `patient_001_healthy_critical_raw.pkl`) will be saved in the `data/simulated/` folder.
+### 3. **Generate Patient Data:**
+<p align="justify">
+Use <code>03_WilsonCowan_80Chanels_patients.ipynb</code> to run the full simulation pipeline for 200 patients across various conditions.  
+Generated <code>.pkl</code> files (e.g., <code>patient_001_healthy_critical_raw.pkl</code>) will be saved in <code>data/simulated/</code>.
+</p>
 
-4.  **Simulate and Explore 80-Channel Wilson-Cowan Dynamics (Criticality Focus for Avalanches):**
-    Open `04_WilsonCowan_80Chanels_Criticality.ipynb` in Jupyter Notebook or Jupyter Lab.
-    Building upon the previous steps, this notebook focuses specifically on simulating the 80-channel Wilson-Cowan network to achieve and explore **critical dynamics**, producing the binarized activity necessary for avalanche detection.
+### 4. **Simulate and Explore 80-Channel Wilson-Cowan Dynamics (Criticality Focus for Avalanches):**
+<p align="justify">
+Open <code>04_WilsonCowan_80Chanels_Criticality.ipynb</code> to simulate the 80-channel WC network focusing on critical dynamics, producing the binarized activity necessary for avalanche detection.
+</p>
 
-5.  **Detect Brain Avalanches:**
-    After generating the binarized data in the previous step, proceed to `05_Criticality_Avalanches.ipynb`.
-    This notebook is dedicated to **detecting brain avalanches** from the binarized activity. It analyzes their properties (e.g., size, duration distributions) and saves the segmented avalanche data (`binarized_during_avalanches` and `binarized_outside_avalanches` for each patient) in the `results/avalanches/` folder.
+### 5. **Detect Brain Avalanches:**
+<p align="justify">
+Use <code>05_Criticality_Avalanches.ipynb</code> to detect and analyze brain avalanches from the binarized activity.
+</p>
 
-6.  **Calculate Higher-Order Interactions (HOI) via Cumulants:**
-    Finally, open `06_Avalanches_Cumulants.ipynb`.
-    This notebook computes **higher-order interactions (HOI)** using cumulants for the binarized activity. It's designed to compare these interactions between periods **during and outside avalanches**. The calculated cumulants for each patient are saved as `.pkl` files in the `results/cumulants/` folder.
+### 6. **Calculate Higher-Order Interactions (HOI) via Cumulants:**
+<p align="justify">
+Open <code>06_Avalanches_Cumulants.ipynb</code> to compute higher-order interactions using cumulants for binarized activity.
+</p>
 
 ---
 
 ## Contributing
 
+<p align="justify">
 Contributions are welcome. If you wish to contribute, please open an issue or submit a pull request.
+</p>
 
 ---
 
 ## References
 
 - **Neurolib:**  
-  Official documentation of the `neurolib` + Wilson-Cowan library:  
   [https://neurolib-dev.github.io/examples/example-0.4-wc-minimal/](https://neurolib-dev.github.io/examples/example-0.4-wc-minimal/)
 
 - **Wilson-Cowan Model:**  
