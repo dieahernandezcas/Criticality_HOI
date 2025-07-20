@@ -73,23 +73,29 @@ Repo_Root/
 
 The `notebooks/` directory contains the main Jupyter notebooks. It's recommended to run them sequentially for a complete analysis pipeline.
 
-1. **Explore Single-Channel Wilson-Cowan Dynamics:**  
-   Open `01_WilsonCowan_1Channel.ipynb` in Jupyter Notebook or Jupyter Lab.  
-   This notebook explores the fundamental behavior of a single WC node under different external input regimes (subcritical, critical, hypercritical) and generates visualizations.
+1.  **Explore Single-Channel Wilson-Cowan Dynamics:**
+    Open `01_WilsonCowan_1Chanels.ipynb` in Jupyter Notebook or Jupyter Lab.
+    This notebook explores the fundamental behavior of a single Wilson-Cowan (WC) neural node under different external input regimes (subcritical, critical, hypercritical) and generates visualizations. It's a foundational step to understand the model's dynamics.
 
-2. **Explore 80-Channel Wilson-Cowan Dynamics (Individual Conditions):**  
-   Open `02_WilsonCowan_80Channels.ipynb` to simulate the 80-channel network for specific neurological conditions.
+2.  **Explore 80-Channel Wilson-Cowan Dynamics (Individual Conditions):**
+    Open `02_WilsonCowan_80Chanels.ipynb` in Jupyter Notebook or Jupyter Lab.
+    This notebook allows you to simulate the 80-channel WC network for specific neurological conditions or parameter sets, providing insights into network-level behavior.
 
-3. **Generate Patient Data:**  
-   Use `03_WilsonCowan_80Channels_patients.ipynb` to run the full simulation pipeline for 200 patients across various conditions.  
-   Generated `.pkl` files (e.g., `patient_001_healthy_critical_raw.pkl`) will be saved in `data/simulated/`.
+3.  **Generate Patient Data:**
+    Open `03_WilsonCowan_80Chanels_patients.ipynb` in Jupyter Notebook or Jupyter Lab.
+    This notebook is crucial for running the full simulation pipeline to generate raw EEG-like data for multiple synthetic patients (e.g., 200) across various conditions. The generated `.pkl` files (e.g., `patient_001_healthy_critical_raw.pkl`) will be saved in the `data/simulated/` folder.
 
-4. **Detect Brain Avalanches:**  
-   After generating patient data, open `04_avalanches_detection.ipynb` to detect and analyze brain avalanches.  
-   Results (e.g., avalanche size/duration distributions) will be saved in `results/`.
+4.  **Simulate and Explore 80-Channel Wilson-Cowan Dynamics (Criticality Focus for Avalanches):**
+    Open `04_WilsonCowan_80Chanels_Criticality.ipynb` in Jupyter Notebook or Jupyter Lab.
+    Building upon the previous steps, this notebook focuses specifically on simulating the 80-channel Wilson-Cowan network to achieve and explore **critical dynamics**, producing the binarized activity necessary for avalanche detection.
 
-5. **Calculate Higher-Order Interactions (HOI):**  
-   Finally, use `05_HOI_Cumulants.ipynb` to compute higher-order interactions using cumulants.
+5.  **Detect Brain Avalanches:**
+    After generating the binarized data in the previous step, proceed to `05_Criticality_Avalanches.ipynb`.
+    This notebook is dedicated to **detecting brain avalanches** from the binarized activity. It analyzes their properties (e.g., size, duration distributions) and saves the segmented avalanche data (`binarized_during_avalanches` and `binarized_outside_avalanches` for each patient) in the `results/avalanches/` folder.
+
+6.  **Calculate Higher-Order Interactions (HOI) via Cumulants:**
+    Finally, open `06_Avalanches_Cumulants.ipynb`.
+    This notebook computes **higher-order interactions (HOI)** using cumulants for the binarized activity. It's designed to compare these interactions between periods **during and outside avalanches**. The calculated cumulants for each patient are saved as `.pkl` files in the `results/cumulants/` folder.
 
 ---
 
