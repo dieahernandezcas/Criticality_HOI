@@ -76,9 +76,9 @@ Repo_Root/
     ```bash
     pip install -r requirements.txt
     ```
-    
+
     <p align="justify">
-    Install the modified neurolib code in editable mode (copy and paste these folder in the path: "../python/site-packages/neurolib/models")
+    Install the modified neurolib code (folder "wc_criticality") in editable mode (copy and paste these folder in the path: "../python/site-packages/neurolib/models")
     </p>
 ---
 
