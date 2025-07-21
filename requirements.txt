@@ -1,0 +1,14 @@
+# Core numerical and scientific computing libraries
+numpy
+scipy
+pandas
+
+# Specific for the Wilson-Cowan model (based on context)
+neurolib
+
+# For plotting and visualizations
+matplotlib
+seaborn
+
+# For running Jupyter notebooks (if users will use them directly)
+jupyter

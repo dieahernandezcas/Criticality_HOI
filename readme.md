@@ -35,6 +35,7 @@ Repo_Root/
 ├── data/                     # Input and generated data files
 │   ├── hcp/                  # HCP dataset (Cmat and Dmat, loaded by neurolib)
 │   └── simulated/            # Simulated patient data (e.g., patient_001_healthy_critical_raw.pkl)
+├── wc_criticality/           # Modified Neurolib code for custom criticality simulations
 ├── scripts/                  # Python scripts for simulations and analysis
 │   ├── 01_WilsonCowan_1Chanels.py                  # Single-channel WC model regime exploration
 │   ├── 02_WilsonCowan_80Chanels.py                 # 80-channel WC model exploration (e.g., specific conditions)
@@ -44,6 +45,7 @@ Repo_Root/
 │   └── 06_Avalanches_Cumulants.ipynb               # Higher-Order Interactions (HOI) calculation via cumulants
 ├── results/                  # Analysis outputs (e.g., avalanche stats, HOI results, plots)
 ├── .gitignore                # Ignored files (e.g., virtual envs, large data files)
+├── requirements.txt          # Project dependencies
 └── README.md                 # Project documentation
 ```
 
@@ -72,6 +74,10 @@ Repo_Root/
     </p>
     ```bash
     pip install -r requirements.txt
+
+    # Install the modified neurolib code in editable mode (copy and paste these folder in the path: "../python/site-packages/neurolib/models")
+    # This ensures your project uses your custom version
+     ./wc_criticality
     ```
     (If `neurolib` is not in your `requirements.txt`, install it manually: `pip install neurolib`)
 
