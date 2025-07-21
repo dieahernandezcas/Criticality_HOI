@@ -72,9 +72,11 @@ Repo_Root/
     <p align="justify">
     The project requires <code>jupyter</code>, <code>neurolib</code>, <code>numpy</code>, <code>matplotlib</code>, and <code>pathlib</code>. Additional libraries might be required for specific analysis notebooks (e.g., <code>scipy</code> for cumulants).
     </p>
+
     ```bash
     pip install -r requirements.txt
     ```
+    
     <p align="justify">
     Install the modified neurolib code in editable mode (copy and paste these folder in the path: "../python/site-packages/neurolib/models")
     </p>
