@@ -41,8 +41,8 @@ The repository is organized as follows:
 ```
 Repo_Root/
 ├── data/                     # Input and generated data files
-│   ├── hcp/                  # HCP dataset (Cmat and Dmat, loaded by neurolib)
-│   └── simulated/            # Simulated patient data (e.g., patient_001_healthy_critical_raw.pkl)
+│   ├── patients/             # Patiens simulated using Neurolib
+│   └── patients_criticality/ # Patiens simulated using Neurolib modified for criticality
 ├── wc_criticality/           # Modified Neurolib code for custom criticality simulations
 ├── scripts/                  # Python scripts for simulations and analysis
 │   ├── 01_WilsonCowan_1Chanels.py                  # Single-channel WC model regime exploration
