@@ -8,6 +8,14 @@ Source code for simulating different brain states using the Wilson-Cowan populat
 
 ---
 
+<p align="justify">
+This animation demonstrates the simulated neural activity within a whole-brain model, specifically operating under a **hypercritical regime**. For the initial five channels, the visualization concurrently presents the continuous excitatory signal (left panel) alongside its corresponding binarized representation (right panel). This serves to illustrate the transformation of continuous neural dynamics into discrete states, highlighting patterns derived via thresholding.
+</p>
+
+![Dynamic Brain Activity Visualization](results/channels_activity_hypercritical_gif.gif)
+
+---
+
 ## Project Overview
 
 <p align="justify">
