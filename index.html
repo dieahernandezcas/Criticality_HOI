@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wilson-Cowan Criticality Project</title>
+  <style>
+    body {
+      font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background: #004466;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    h2, h3 {
+      color: #004466;
+      margin-top: 30px;
+    }
+    img {
+      max-width: 100%;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+    code {
+      background: #eee;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+      background: #004466;
+      color: #fff;
+    }
+    a {
+      color: #004466;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    /* Botón GitHub */
+    .btn {
+      display: inline-block;
+      padding: 12px 25px;
+      font-size: 1em;
+      color: white;
+      background: #004466;
+      border: none;
+      border-radius: 25px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .btn:hover {
+      background: #006699;
+    }
+    .center {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .badges {
+        display: flex;
+        justify-content: center; /* centra horizontalmente */
+        gap: 0; /* espacio entre los badges */
+        margin: 20px 0;
+    }
+    .badges img {
+        height: 25px; /* tamaño uniforme */
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Wilson-Cowan Criticality Project</h1>
+    <p>Exploring brain criticality, avalanches, and higher-order interactions</p>
+  </header>
+
+  <div class="container">
+
+     <div class="badges">
+            <img src="https://img.shields.io/badge/Status-In%20Development-yellow" alt="Status Badge">
+            <img src="https://img.shields.io/badge/License-MIT-blue" alt="License Badge">
+            <img src="https://img.shields.io/badge/Version-1.0.0-informational" alt="Version Badge">
+    </div>
+
+    <h2>GitHub Repository</h2>
+    <p class="center">
+      <a href="https://github.com/dieahernandezcas/Criticality_HOI" class="btn" target="_blank">View on GitHub</a>
+    </p>
+
+    <h2>About</h2>
+    <p>
+      This project investigates the dynamics of the stochastic Wilson-Cowan model, 
+      focusing on critical behavior, brain avalanches, and higher-order interactions (HOI). 
+      Using computational models and empirical datasets, we aim to better understand 
+      how brain networks operate near criticality and how these dynamics relate 
+      to neural computation and function.
+    </p>
+
+    <h2>Folder Structure</h2>
+    <pre><code>.
+Repo_Root/
+├── data/              # All generated and input data files
+│   ├── hcp/           # HCP dataset with Cmat and Dmat (loaded by neurolib)
+│   └── simulated/     # Simulated patient data
+├── scripts/           # Python scripts for simulations and analysis
+├── results/           # Outputs (e.g., avalanche stats, HOI results, plots, gifs)
+├── Images/            # Figures and illustrations
+└── README.md
+    </code></pre>
+
+    <h2>Illustration</h2>
+    <h3>Wilson-Cowan Brain Model GIF Generator</h3>
+    <p>
+      Simulation of a Wilson-Cowan whole-brain model using Human Connectome Project (HCP) connectivity data. 
+      It is specifically configured to run in the <strong>Hypercritical regime</strong>.
+    </p>
+    <p>
+      The script visualizes the neuronal activity by:
+    </p>
+    <ul>
+      <li>Simulating brain dynamics.</li>
+      <li>Binarizing the excitatory (<code>exc</code>) signal for each channel based on a dynamic threshold.</li>
+      <li>This GIF displays both the raw and binarized signals for the first 5 channels over a sliding time window.</li>
+    </ul>
+
+    <img src="results/channels_activity_hypercritical_gif.gif" alt="Hypercritical channels activity animation">
+
+    <h2>References</h2>
+    <ul>
+      <li><strong>Wilson-Cowan Model:</strong> De Candia, A., et al. (2021). 
+        <em>Critical Behaviour of the Stochastic Wilson-Cowan Model</em>. 
+        PLOS Computational Biology. 
+        <a href="https://doi.org/10.1371/journal.pcbi.1008884">https://doi.org/10.1371/journal.pcbi.1008884</a>
+      </li>
+      <li><strong>Neurolib:</strong> Official documentation available at 
+        <a href="https://neurolib-dev.net/docs/">https://neurolib-dev.net/docs/</a>
+      </li>
+      <li><strong>Wilson-Cowan and Criticality:</strong> Golpayegan, H. A., & De Candia, A. (2023). 
+        <em>Bistability and Criticality in the Stochastic Wilson-Cowan Model</em>. 
+        Physical Review E. 
+        <a href="https://doi.org/10.1103/PhysRevE.107.034404">https://doi.org/10.1103/PhysRevE.107.034404</a>
+      </li>
+      <li><strong>Brain Avalanches:</strong> Larremore, D. B., et al. (2012). 
+        <em>Statistical Properties of Avalanches in Networks</em>. 
+        Physical Review E. 
+        <a href="https://doi.org/10.1103/PhysRevE.85.066131">https://doi.org/10.1103/PhysRevE.85.066131</a>
+      </li>
+      <li><strong>Higher-Order Interactions:</strong> Hindriks, R., et al. (2024). 
+        <em>Higher‐order Functional Connectivity Analysis of Resting‐state fMRI Using Multivariate Cumulants</em>. 
+        Human Brain Mapping. 
+        <a href="https://doi.org/10.1002/hbm.26663">https://doi.org/10.1002/hbm.26663</a>
+      </li>
+    </ul>
+
+    <h2>Authors & Contact</h2>
+    <p><strong>Diego Alejandro Hernández Castañeda</strong><br>
+      PhD Student, Systems and Computing Engineering<br>
+      Universidad Nacional de Colombia<br>
+      Email: <a href="mailto:dieahernandezcas@unal.edu.co">dieahernandezcas@unal.edu.co</a>
+    </p>
+    <p><strong>Prof. Francisco Albeiro Gómez Jaramillo, PhD</strong><br>
+      Associate Professor, Mathematics Department<br>
+      Universidad Nacional de Colombia<br>
+      Email: <a href="mailto:fagomezj@unal.edu.co">fagomezj@unal.edu.co</a>
+    </p>
+    <p><strong>Prof. Prejaas Kavish Baldewpersad Tewarie, PhD</strong><br>
+      Clinical Physician and Teaching Assistant Grant Holder<br>
+      CERVO Brain Research Centre, Université Laval<br>
+      Email: <a href="mailto:Prejaas.KBTewarie@cervo.ulaval.ca">Prejaas.KBTewarie@cervo.ulaval.ca</a>
+    </p>
+
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Wilson-Cowan Criticality Project</p>
+  </footer>
+</body>
+</html>
