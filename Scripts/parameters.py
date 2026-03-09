@@ -55,7 +55,7 @@ param_nodes = [
     dict(   # Nodo 0
         tauE=0.125,
         tauI=0.25,
-        aE=1.5,
+        aE=1.5, # 0.5 to 3, 20
         aI=1.0,
         thetaE=2.0,
         thetaI=3.0,
@@ -69,7 +69,7 @@ param_nodes = [
     dict(   # Nodo 1
         tauE=0.12,
         tauI=0.25,
-        aE=2.0,
+        aE=2.0, # 0.5 to 3, 20
         aI=2.0,
         thetaE=1.5,
         thetaI=3.5,
@@ -83,7 +83,7 @@ param_nodes = [
     dict(   # Nodo 2
         tauE=0.12,
         tauI=0.25,
-        aE=2,      
+        aE=2,   # 0.5 to 3, 20    
         aI=2,
         thetaE=2.0,
         thetaI=1.0,  

@@ -345,6 +345,7 @@ def plot_metrics_contour(matrix, P_values, K_values, title="Metric Map",
     )
 
     fig.show()
+    fig.write_image(f"imgs/{title}.png")
 
 
 
