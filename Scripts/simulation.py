@@ -25,6 +25,30 @@ def simulate_wc(state0, P, K, M, T, dt):
 
     return t, states
 
+def simulate_wc_stochastic(state0, P, K, M, T, dt, sigma_E=0.01):
+    n_steps = int(T / dt)
+    N = M.shape[0]
+    states = np.zeros((n_steps, 2 * N))
+    states[0] = state0
+    t = np.linspace(0, T, n_steps)
+
+    for i in range(1, n_steps):
+        states[i] = rk4_step(wc_rhs, states[i-1], dt, P, K, M)
+        # derivada en el estado previo
+        deriv = wc_rhs(states[i-1], P, K, M)
+        dE_dt = deriv[:N]
+        dI_dt = deriv[N:]
+
+        # ruido browniano
+        dW_E = np.random.randn(N) * np.sqrt(dt)
+
+        E_new = states[i-1, :N] + dE_dt * dt + sigma_E * dW_E
+        I_new = states[i-1, N:] + dI_dt * dt
+
+        states[i] = np.concatenate([E_new, I_new])
+
+    return t, states
+
 
 def simulate_wc_higher_order(state0, P, K3, T_ho, T, dt):
     """Simulate Wilson-Cowan network with higher-order interactions."""
@@ -40,24 +64,172 @@ def simulate_wc_higher_order(state0, P, K3, T_ho, T, dt):
     return t, states
 
 
-def euler_maruyama_step(state, dt, rhs_function, *args, sigma_E=0.01):
-    """Euler-Maruyama step for Wilson-Cowan with noise in E."""
-    N = len(state) // 2
+def simulate_wc_higher_order_stochastic(state0, P, K3, T_ho, T, dt, sigma_E=0.01):
+    """Simulate Wilson-Cowan network with higher-order interactions."""
+    n_steps = int(T / dt)
+    N = T_ho.shape[0]
+    states = np.zeros((n_steps, 2 * N))
+    states[0] = state0
+    t = np.linspace(0, T, n_steps)
 
-    dstate_dt = rhs_function(state, *args)
-    dE_dt = dstate_dt[:N]
-    dI_dt = dstate_dt[N:]
+    for i in range(1, n_steps):
+        states[i] = rk4_step(wc_rhs_higher_order, states[i-1], dt, P, K3, T_ho)
+        deriv = wc_rhs_higher_order(states[i-1], P, K3, T_ho)
 
-    dW_E = np.random.randn(N) * np.sqrt(dt)
+        dE_dt = deriv[:N]
+        dI_dt = deriv[N:]
 
-    E_new = state[:N] + dE_dt * dt + sigma_E * dW_E
-    I_new = state[N:] + dI_dt * dt
+        # ruido browniano
+        dW_E = np.random.randn(N) * np.sqrt(dt)
 
-    return np.concatenate([E_new, I_new])
+        E_new = states[i-1, :N] + dE_dt * dt + sigma_E * dW_E
+        I_new = states[i-1, N:] + dI_dt * dt
+
+        states[i] = np.concatenate([E_new, I_new])
+
+    return t, states
+
+
+def simulate_wc_additive(state0, P, K, M, T, dt):
+    n_steps = int(T / dt)
+    N = M.shape[0]
+    states = np.zeros((n_steps, 2 * N))
+    states[0] = state0
+    t = np.linspace(0, T, n_steps)
+
+    for i in range(1, n_steps):
+        states[i] = rk4_step(wc_rhs_additive, states[i-1], dt, P, K, M)
+
+    return t, states
+
+
+def simulate_wc_additive_stochastic(state0, P, K, M, T, dt, sigma_E=0.01):
+    n_steps = int(T / dt)
+    N = M.shape[0]
+    states = np.zeros((n_steps, 2 * N))
+    states[0] = state0
+    t = np.linspace(0, T, n_steps)
+
+    for i in range(1, n_steps):
+        states[i] = rk4_step(wc_rhs_additive, states[i-1], dt, P, K, M)
+        deriv = wc_rhs_additive(states[i-1], P, K, M)
+
+        dE_dt = deriv[:N]
+        dI_dt = deriv[N:]
+
+        # ruido browniano
+        dW_E = np.random.randn(N) * np.sqrt(dt)
+
+        E_new = states[i-1, :N] + dE_dt * dt + sigma_E * dW_E
+        I_new = states[i-1, N:] + dI_dt * dt
+
+        states[i] = np.concatenate([E_new, I_new])
+
+    return t, states
+
+
+def simulate_wc_higher_order_additive(state0, P, K3, T_ho, T, dt):
+    """Simulate Wilson-Cowan network with higher-order interactions."""
+    n_steps = int(T / dt)
+    N = T_ho.shape[0]
+    states = np.zeros((n_steps, 2 * N))
+    states[0] = state0
+    t = np.linspace(0, T, n_steps)
+
+    for i in range(1, n_steps):
+        states[i] = rk4_step(wc_rhs_higher_order_additive, states[i-1], dt, P, K3, T_ho)
+
+    return t, states
+
+def simulate_wc_higher_order_additive_stochastic(state0, P, K3, T_ho, T, dt, sigma_E=0.01):
+    """Simulate Wilson-Cowan network with higher-order interactions."""
+    n_steps = int(T / dt)
+    N = T_ho.shape[0]
+    states = np.zeros((n_steps, 2 * N))
+    states[0] = state0
+    t = np.linspace(0, T, n_steps)
+
+    for i in range(1, n_steps):
+        states[i] = rk4_step(wc_rhs_higher_order_additive, states[i-1], dt, P, K3, T_ho)
+        deriv = wc_rhs_higher_order_additive(states[i-1], P, K3, T_ho)
+
+        dE_dt = deriv[:N]
+        dI_dt = deriv[N:]
+
+        # ruido browniano
+        dW_E = np.random.randn(N) * np.sqrt(dt)
+
+        E_new = states[i-1, :N] + dE_dt * dt + sigma_E * dW_E
+        I_new = states[i-1, N:] + dI_dt * dt
+
+        states[i] = np.concatenate([E_new, I_new])
+
+    return t, states
 
 
 
-def simulate_wc_stochastic(state0, P, K, M, T, dt, higher_order=False, T_ho=None, sigma_E=0.01):
+##moving parameters A and K:
+
+def simulate_wc_higher_order_stochastic_a(state0, A, K3, T_ho, T, dt, sigma_E=0.01, P=7):
+    """Simulate Wilson-Cowan network with higher-order interactions."""
+    n_steps = int(T / dt)
+    N = T_ho.shape[0]
+    states = np.zeros((n_steps, 2 * N))
+    states[0] = state0
+    t = np.linspace(0, T, n_steps)
+
+    for i in range(1, n_steps):
+        states[i] = rk4_step(wc_rhs_higher_order_a, states[i-1], dt, A, K3, T_ho, P)
+        deriv = wc_rhs_higher_order_a(states[i-1], A, K3, T_ho, P)
+
+        dE_dt = deriv[:N]
+        dI_dt = deriv[N:]
+
+        # ruido browniano
+        dW_E = np.random.randn(N) * np.sqrt(dt)
+
+        E_new = states[i-1, :N] + dE_dt * dt + sigma_E * dW_E
+        I_new = states[i-1, N:] + dI_dt * dt
+
+        states[i] = np.concatenate([E_new, I_new])
+
+    return t, states
+
+
+def simulate_wc_stochastic_a(state0, A, K, M, T, dt, sigma_E=0.01, P=7):
+    n_steps = int(T / dt)
+    N = M.shape[0]
+    states = np.zeros((n_steps, 2 * N))
+    states[0] = state0
+    t = np.linspace(0, T, n_steps)
+
+    for i in range(1, n_steps):
+        states[i] = rk4_step(wc_rhs_a, states[i-1], dt, A, K, M, P)
+        # derivada en el estado previo
+        deriv = wc_rhs_a(states[i-1], A, K, M, P)
+        dE_dt = deriv[:N]
+        dI_dt = deriv[N:]
+
+        # ruido browniano
+        dW_E = np.random.randn(N) * np.sqrt(dt)
+
+        E_new = states[i-1, :N] + dE_dt * dt + sigma_E * dW_E
+        I_new = states[i-1, N:] + dI_dt * dt
+
+        states[i] = np.concatenate([E_new, I_new])
+
+    return t, states
+
+
+
+
+
+
+
+
+#########Backup functions
+
+def simulate_wc_stochastic_backup(state0, P, K, M, T, dt, higher_order=False, T_ho=None, sigma_E=0.01):
     """
     Simulate Wilson-Cowan network with stochastic excitatory dynamics (noise in E).
 
@@ -121,35 +293,7 @@ def simulate_wc_stochastic(state0, P, K, M, T, dt, higher_order=False, T_ho=None
 
 
 
-def simulate_wc_additive(state0, P, K, M, T, dt):
-    n_steps = int(T / dt)
-    N = M.shape[0]
-    states = np.zeros((n_steps, 2 * N))
-    states[0] = state0
-    t = np.linspace(0, T, n_steps)
-
-    for i in range(1, n_steps):
-        states[i] = rk4_step(wc_rhs_additive, states[i-1], dt, P, K, M)
-
-    return t, states
-
-
-def simulate_wc_higher_order_additive(state0, P, K3, T_ho, T, dt):
-    """Simulate Wilson-Cowan network with higher-order interactions."""
-    n_steps = int(T / dt)
-    N = T_ho.shape[0]
-    states = np.zeros((n_steps, 2 * N))
-    states[0] = state0
-    t = np.linspace(0, T, n_steps)
-
-    for i in range(1, n_steps):
-        states[i] = rk4_step(wc_rhs_higher_order_additive, states[i-1], dt, P, K3, T_ho)
-
-    return t, states
-
-
-
-def simulate_wc_stochastic_additive(state0, P, K, M, T, dt, higher_order=False, T_ho=None, sigma_E=0.01):
+def simulate_wc_stochastic_additive_backup(state0, P, K, M, T, dt, higher_order=False, T_ho=None, sigma_E=0.01):
     """
     Simulate Wilson-Cowan network with stochastic excitatory dynamics (noise in E).
 
@@ -187,6 +331,14 @@ def simulate_wc_stochastic_additive(state0, P, K, M, T, dt, higher_order=False, 
     states[0] = state0
     t = np.linspace(0, T, n_steps)
 
+    if higher_order:
+        if T_ho is None:
+            raise ValueError("T_ho must be provided for higher-order interactions.")
+        dstate_dt = simulate_wc_higher_order_additive_stochastic(state0, P, K3, T_ho, T, dt)
+    else:
+        dstate_dt = simulate_wc_additive_stochastic(states[i-1], P, K, M)
+
+    """
     for i in range(1, n_steps):
         # calcular RHS según tipo de acoplamiento
         if higher_order:
@@ -207,5 +359,6 @@ def simulate_wc_stochastic_additive(state0, P, K, M, T, dt, higher_order=False, 
         I_new = states[i-1, N:] + dI_dt * dt
 
         states[i] = np.concatenate([E_new, I_new])
+        """
 
-    return t, states
+    return t, dstate_dt #states

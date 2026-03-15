@@ -2,7 +2,9 @@
 import numpy as np
 from .parameters import param_nodes
 
-
+############
+#### P+k parameters variation
+############
 def S(x, a, theta):
     #return 1.0 / (1.0 + np.exp(-a * (x - theta)))
     return 1.0 / (1.0 + np.exp(-a * (x)))
@@ -180,6 +182,95 @@ def wc_rhs_higher_order_additive(state, P, K3, T_ho):
         
         dE_dt[i] = (-E[i] + S(p['cEE']*E[i] - p['cEI']*I[i] + P_i + K3*higher_order_input,
                               a=p['aE'], theta=p['thetaE'])) / p['tauE']
+        
+        dI_dt[i] = (-I[i] + S(p['cIE']*E[i] - p['cII']*I[i] + p['Q'],
+                              a=p['aI'], theta=p['thetaI'])) / p['tauI']
+        
+    return np.concatenate([dE_dt, dI_dt])
+
+
+
+
+
+
+############
+#### a+k parameters variation
+#### p=7 fixed
+############
+def wc_rhs_a(state, A, K, M, P=7):
+    """
+    Wilson–Cowan with pairwise coupling.
+    P can be scalar or array of length N.
+    """
+    N = M.shape[0]
+    E = state[:N]
+    I = state[N:]
+
+    coupling = K * (M @ E)
+
+    dE_dt = np.zeros(N)
+    dI_dt = np.zeros(N)
+
+    for i in range(N):
+        p = param_nodes[i]
+
+        A_i = A if np.isscalar(A) else A[i]
+
+        dE_dt[i] = (
+            -E[i]
+            + S(
+                p["cEE"] * E[i]
+                - p["cEI"] * I[i]
+                + P
+                + coupling[i],
+                A_i,
+                p["thetaE"],
+            )
+        ) / p["tauE"]
+
+        dI_dt[i] = (
+            -I[i]
+            + S(
+                p["cIE"] * E[i]
+                - p["cII"] * I[i]
+                + p["Q"],
+                p["aI"],
+                p["thetaI"],
+            )
+        ) / p["tauI"]
+
+    return np.concatenate([dE_dt, dI_dt])
+
+
+def wc_rhs_higher_order_a(state, A, K3, T_ho, P=7):
+    """
+    Wilson-Cowan RHS with higher-order interactions and node-specific parameters.
+    state: [E0, E1, ..., I0, I1, ...]
+    P: external input (scalar or vector)
+    K3: higher-order coupling scalar
+    T_ho: higher-order tensor
+    """
+    N = T_ho.shape[0]
+    E = state[:N]
+    I = state[N:]
+    
+    dE_dt = np.zeros(N)
+    dI_dt = np.zeros(N)
+    
+    for i in range(N):
+        p = param_nodes[i]  # parámetros nodo i
+        
+        # external input dinámico por nodo
+        A_i = A if np.isscalar(A) else A[i]
+        
+        # término de acoplamiento de orden superior
+        higher_order_input = 0.0
+        for j in range(N):
+            for k in range(N):
+                higher_order_input += T_ho[i, j, k] * E[j] * E[k]
+        
+        dE_dt[i] = (-E[i] + S(p['cEE']*E[i] - p['cEI']*I[i] + P + K3*higher_order_input,
+                              a=A_i, theta=p['thetaE'])) / p['tauE']
         
         dI_dt[i] = (-I[i] + S(p['cIE']*E[i] - p['cII']*I[i] + p['Q'],
                               a=p['aI'], theta=p['thetaI'])) / p['tauI']
