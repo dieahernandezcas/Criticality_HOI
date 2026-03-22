@@ -1,185 +1,278 @@
-# Brain State Modeling and Synthetic Data Generation with Wilson-Cowan and Neurolib
+# Higher-Order Statistical Structure from Nonlinear Dynamics
 
-<p align="justify">
-Source code for simulating different brain states using the Wilson-Cowan population model and generating synthetic neural data, followed by analyses including avalanche detection and higher-order interactions.
-</p>
+[![Status](https://img.shields.io/badge/Status-In%20Development-yellow)]()
+[![License](https://img.shields.io/badge/License-MIT-blue)]()
+[![Python](https://img.shields.io/badge/Python-3.9%2B-informational)]()
 
-![Status Badge](https://img.shields.io/badge/Status-In%20Development-yellow) ![License Badge](https://img.shields.io/badge/License-MIT-blue) ![Version Badge](https://img.shields.io/badge/Version-1.0.0-informational)
-
----
-
-<p align="justify">
-This animation demonstrates the simulated neural activity within a whole-brain model. For the initial five channels, the visualization concurrently presents the continuous excitatory signal (left panel) alongside its corresponding binarized representation (right panel). This serves to illustrate the transformation of continuous neural dynamics into discrete states, highlighting patterns derived via thresholding.
-</p>
-
-![Dynamic Brain Activity Visualization](results/channels_activity_hypercritical_gif.gif)
+> **Hernández, D., Zamora-López, G., Laureys, S., Hindriks, R., Gomez, F., & Tewarie, P.K.B.**
+> *"Higher-order statistical structure emerges from nonlinear dynamics without explicit higher-order coupling."*
+> (2025, preprint)
 
 ---
 
-## Project Overview
+## Overview
 
-<p align="justify">
-This project focuses on applying the <b>Wilson-Cowan (WC) model</b>, implemented in the <code>neurolib</code> library, to simulate neural activity across a whole-brain network. The main goal is to generate <b>synthetic brain signals</b> representing various neurological states (e.g., healthy, coma, brain death) by adjusting WC model parameters. These simulations are performed on an <b>80-channel structural connectivity matrix</b> derived from the Human Connectome Project (HCP) dataset.
-</p>
+This repository contains the full simulation code for a minimal three-node
+Wilson–Cowan network study that asks a fundamental question in computational
+neuroscience and complex-systems theory:
 
-<p align="justify">
-This project aims to:
-</p>
+> **Do higher-order statistical dependencies in neural signals require
+> explicit higher-order synaptic interactions, or can they emerge generically
+> from nonlinear pairwise dynamics?**
 
-1. Simulate the dynamics of excitatory and inhibitory neural populations in both single-node and multi-node (80-channel) configurations.
-2. Explore how varying key WC model parameters (e.g., external input, global coupling) can lead to different brain activity regimes.
-3. Generate and store simulated data (continuous and binarized neural activity) for a cohort of 200 "patients," representing distinct clinical conditions.
-4. Perform advanced analyses on the simulated data, including <b>brain avalanche detection</b> and calculation of <b>Higher-Order Interactions (HOI) via Cumulants</b>.
-5. Provide a synthetic dataset and analysis tools useful for studying complex brain dynamics and developing new methods for neural data analysis.
+We compare four coupling architectures — two pairwise (additive and diffusive)
+and two explicit third-order (additive and diffusive) — and quantify
+higher-order statistical structure using **Total Correlation minus Dual Total
+Correlation (TC − DTC)** and **third-order cumulants (κ₁₂₃)**. We vary
+three control parameters: external drive *P*, coupling strength *K*, and the
+sigmoid slope *a_E* (local nonlinear gain).
+
+### Main finding
+
+In the oscillatory (post-Hopf) regime, the pairwise additive model produces
+TC − DTC values that are on average **16-fold** above the fixed-point
+baseline, reaching magnitudes comparable to the explicit third-order model.
+Increasing *a_E* amplifies TC − DTC up to **28-fold**, independently of
+coupling order. This confirms that **proximity to a Hopf bifurcation and
+local nonlinear gain — not coupling architecture — are the primary drivers of
+higher-order statistical structure**.
 
 ---
 
-## Folder Structure
-
-The repository is organized as follows:
+## Repository Structure
 
 ```
-Repo_Root/
-├── data/                     # Input and generated data files
-│   ├── patients/             # Patiens simulated using Neurolib
-│   └── patients_criticality/ # Patiens simulated using Neurolib modified for criticality
-├── wc_criticality/           # Modified Neurolib code for custom criticality simulations
-├── scripts/                  # Python scripts for simulations and analysis
-│   ├── 01_WilsonCowan_1Chanels.py                  # Single-channel WC model regime exploration
-│   ├── 02_WilsonCowan_80Chanels.py                 # 80-channel WC model exploration (e.g., specific conditions)
-│   ├── 03_WilsonCowan_80Chanels_patients.py        # Data generation for multiple patients (200) across conditions
-│   ├── 04_WilsonCowan_80Chanels_Criticality.ipynb  # Exploration of 80-channel WC model for criticality
-│   ├── 05_Criticality_Avalanches.ipynb             # Brain avalanche detection and analysis from binarized data
-│   └── 06_Avalanches_Cumulants.ipynb               # Higher-Order Interactions (HOI) calculation via cumulants
-├── results/                  # Analysis outputs (e.g., avalanche stats, HOI results, plots)
-├── .gitignore                # Ignored files (e.g., virtual envs, large data files)
-├── requirements.txt          # Project dependencies
-└── README.md                 # Project documentation
+Criticality_HOI/
+├── Scripts/                          # Python source modules (importable package)
+│   ├── __init__.py
+│   ├── parameters.py                 # Heterogeneous per-node parameter sets
+│   ├── parameters_random.py          # Homogeneous global parameters & sweep grids
+│   ├── dynamics.py                   # Wilson–Cowan RHS for all 4 coupling types
+│   ├── simulation.py                 # RK4 integrator + stochastic wrappers
+│   ├── metrics.py                    # TC, DTC, cumulants, skewness, kurtosis
+│   ├── oscillation_detection.py      # Poincaré-section limit-cycle detector
+│   └── visualization.py              # Matplotlib + Plotly plotting utilities
+│
+├── Notebook/                         # Jupyter notebooks for all experiments
+│   ├── W_C_Pairwise.ipynb            # Pairwise additive: (P, K) sweep
+│   ├── W_C_Pairwise_Diffusive.ipynb  # Pairwise diffusive: (P, K) sweep
+│   ├── W_C_Coupling.ipynb            # Third-order additive: (P, K) sweep
+│   ├── W_C_Coupling_Diffusive.ipynb  # Third-order diffusive: (P, K) sweep
+│   ├── W_C_Pairwise_Lines.ipynb      # Pairwise additive: metric curves vs K
+│   ├── W_C_Pairwise_Diffusive_Lines.ipynb
+│   ├── W_C_Coupling_Lines.ipynb
+│   ├── W_C_Coupling_Diffusive_Lines.ipynb
+│   ├── W_C_Pairwise_a+k.ipynb        # Pairwise additive: a_E–K sweep
+│   ├── W_C_Coupling_a+k.ipynb        # Third-order additive: a_E–K sweep
+│   ├── Results_comparisons.ipynb     # Load saved results, generate paper figures
+│   └── Test.ipynb                    # Quick exploration / sanity checks
+│
+├── results/                          # Pre-computed metric arrays and paper figures
+│   ├── metrics_Pairwise_noise.npz
+│   ├── metrics_Pairwise_diffusive_noise.npz
+│   ├── metrics_Coupling_noise.npz
+│   ├── metrics_Coupling_diffusive_noise.npz
+│   ├── metrics_Pairwise_noise_a.npz
+│   ├── metrics_Coupling_noise_a.npz
+│   ├── fig1_PK_additive.pdf
+│   ├── fig2_PK_diffusive.pdf
+│   ├── fig3_aK_additive.pdf
+│   └── paper_stats.json
+│
+├── data/                             # Simulation inputs
+│   ├── patients/
+│   └── patients_criticality/
+│
+├── Images/                           # Reference images
+├── archive/                          # Legacy notebooks and scripts (not maintained)
+│   ├── Notebooks_BackUps/
+│   ├── Notebooks_BackUps_2/
+│   └── Scripts_BackUps/
+│
+├── requirements.txt                  # Python dependencies
+├── .gitignore
+└── README.md
 ```
 
 ---
 
-## Setup and Installation
+## Model Description
 
-1. **Clone the repository:**
-    ```bash
-    git clone [YOUR_REPOSITORY_URL]
-    cd [your_repository_name]
-    ```
+### Wilson–Cowan Network
 
-2. **Create a virtual environment (recommended):**
-    ```bash
-    python -m venv venv
-    # On Windows:
-    # venv\Scripts\activate
-    # On macOS/Linux:
-    source venv/bin/activate
-    ```
+We study a minimal network of **N = 3** coupled Wilson–Cowan nodes with
+all-to-all connectivity. Each node *i* contains an excitatory variable
+*Eᵢ(t)* and an inhibitory variable *Iᵢ(t)*.
 
-3. **Install dependencies:**
-    <p align="justify">
-    The project requires <code>jupyter</code>, <code>neurolib</code>, <code>numpy</code>, <code>matplotlib</code>, and <code>pathlib</code>. Additional libraries might be required for specific analysis notebooks (e.g., <code>scipy</code> for cumulants).
-    </p>
+**Inhibitory population (all architectures):**
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+$$\tau_I^{(i)} \dot{I}_i = -I_i + S\!\left(c_{IE}^{(i)} E_i - c_{II}^{(i)} I_i + Q^{(i)}\right)$$
 
-    <p align="justify">
-    Install the modified neurolib code (folder "wc_criticality") in editable mode (copy and paste these folder in the path: "../python/site-packages/neurolib/models")
-    </p>
+**Excitatory population — four coupling architectures:**
+
+| Architecture | Label | Coupling term |
+|---|---|---|
+| Pairwise additive | PA | K Σⱼ Mᵢⱼ Eⱼ |
+| Pairwise diffusive | PD | K Σⱼ Mᵢⱼ (Eⱼ − Eᵢ) |
+| Third-order additive | TA | K₃ Σⱼₖ Tᵢⱼₖ Eⱼ Eₖ |
+| Third-order diffusive | TD | K₃ Σⱼₖ Tᵢⱼₖ (Eⱼ−Eᵢ)(Eₖ−Eᵢ) |
+
+The logistic sigmoid transfer function is S(x; a) = 1 / (1 + exp(−ax)).
+
+### Higher-Order Statistical Measures
+
+- **TC (Total Correlation):** measures the total redundancy across all nodes.
+- **DTC (Dual Total Correlation):** measures the total synergy.
+- **TC − DTC (O-information):** positive → net redundancy; negative → net synergy.
+- **κ₁₂₃ (Third-order cumulant):** normalized co-skewness of the joint excitatory activity.
+
+All measures are computed under a Gaussian approximation using the empirical
+covariance matrix of the post-transient excitatory time series.
+
+### Stochastic Integration
+
+The network is integrated with a 4th-order Runge–Kutta (RK4) scheme. Small
+additive Gaussian noise (σ_E = 0.01, Euler–Maruyama) is applied to the
+excitatory population to compute the covariance matrix at each (P, K) point.
+
+---
+
+## Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/<your-username>/Criticality_HOI.git
+cd Criticality_HOI
+```
+
+### 2. Create a virtual environment (recommended)
+
+```bash
+python -m venv venv
+source venv/bin/activate        # macOS / Linux
+# venv\Scripts\activate         # Windows
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
 ---
 
 ## Usage
 
-<p align="justify">
-The <code>notebooks/</code> directory contains the main Jupyter notebooks. It's recommended to run them sequentially for a complete analysis pipeline.
-</p>
+### Reproducing paper results
 
-### 1. **Explore Single-Channel Wilson-Cowan Dynamics:**
-<p align="justify">
-Open <code>01_WilsonCowan_1Chanels.ipynb</code> in Jupyter Notebook or Jupyter Lab.  
-This notebook explores the fundamental behavior of a single Wilson-Cowan (WC) neural node under different external input regimes (subcritical, critical, hypercritical) and generates visualizations. It's a foundational step to understand the model's dynamics.
-</p>
+All experiments are self-contained Jupyter notebooks. The recommended order
+for reproducing the paper figures is:
 
-### 2. **Explore 80-Channel Wilson-Cowan Dynamics (Individual Conditions):**
-<p align="justify">
-Open <code>02_WilsonCowan_80Chanels.ipynb</code> to simulate the 80-channel WC network for specific neurological conditions or parameter sets.
-</p>
+| Step | Notebook | Output file |
+|------|----------|-------------|
+| 1 | `W_C_Pairwise.ipynb` | `results/metrics_Pairwise_noise.npz` |
+| 2 | `W_C_Pairwise_Diffusive.ipynb` | `results/metrics_Pairwise_diffusive_noise.npz` |
+| 3 | `W_C_Coupling.ipynb` | `results/metrics_Coupling_noise.npz` |
+| 4 | `W_C_Coupling_Diffusive.ipynb` | `results/metrics_Coupling_diffusive_noise.npz` |
+| 5 | `W_C_Pairwise_a+k.ipynb` | `results/metrics_Pairwise_noise_a.npz` |
+| 6 | `W_C_Coupling_a+k.ipynb` | `results/metrics_Coupling_noise_a.npz` |
+| 7 | `Results_comparisons.ipynb` | `results/fig1_PK_additive.pdf`, etc. |
 
-### 3. **Generate Patient Data:**
-<p align="justify">
-Use <code>03_WilsonCowan_80Chanels_patients.ipynb</code> to run the full simulation pipeline for 200 patients across various conditions.  
-Generated <code>.pkl</code> files (e.g., <code>patient_001_healthy_critical_raw.pkl</code>) will be saved in <code>data/simulated/</code>.
-</p>
+> **Note:** Pre-computed `.npz` files are already included in `results/`,
+> so you can jump directly to step 7 to reproduce the figures without
+> re-running the full parameter sweeps.
 
-### 4. **Simulate and Explore 80-Channel Wilson-Cowan Dynamics (Criticality Focus for Avalanches):**
-<p align="justify">
-Open <code>04_WilsonCowan_80Chanels_Criticality.ipynb</code> to simulate the 80-channel WC network focusing on critical dynamics, producing the binarized activity necessary for avalanche detection.
-</p>
+### Quick start (single simulation)
 
-### 5. **Detect Brain Avalanches:**
-<p align="justify">
-Use <code>05_Criticality_Avalanches.ipynb</code> to detect and analyze brain avalanches from the binarized activity.
-</p>
+```python
+import sys
+sys.path.append('path/to/Criticality_HOI/')  # add repo root to path
 
-### 6. **Calculate Higher-Order Interactions (HOI) via Cumulants:**
-<p align="justify">
-Open <code>06_Avalanches_Cumulants.ipynb</code> to compute higher-order interactions using cumulants for binarized activity.
-</p>
+from Scripts.parameters_random import *
+from Scripts.simulation import simulate_wc_stochastic
+from Scripts.metrics import TC_gauss, DTC_gauss
+
+import numpy as np
+
+# Initial condition
+state0 = 0.1 * np.random.randn(2 * N_nodes)
+
+# Run stochastic simulation (pairwise additive, P=5, K=0.4)
+t, states = simulate_wc_stochastic(state0, P=5.0, K=0.4, M=M, T=20, dt=dt)
+
+# Discard 2 s transient, extract excitatory time series
+E = states[int(2.0 / dt):, :N_nodes]
+
+# Compute TC and DTC under Gaussian approximation
+Sigma = np.cov(E.T)
+tc  = TC_gauss(Sigma)
+dtc = DTC_gauss(Sigma)
+print(f"TC = {tc:.4f} | DTC = {dtc:.4f} | TC−DTC = {tc - dtc:.4f} nats")
+```
 
 ---
 
-## Contributing
+## Parameter Space
 
-<p align="justify">
-Contributions are welcome. If you wish to contribute, please open an issue or submit a pull request.
-</p>
+The phase diagrams cover the following grids:
+
+| Parameter | Range | Steps | Description |
+|-----------|-------|-------|-------------|
+| External drive P | 1.0 → 10.0 | 20 | Controls proximity to Hopf bifurcation |
+| Coupling strength K | 0.0 → 1.0 | 20 | Pairwise inter-node coupling |
+| Coupling strength K₃ | 0.0 → 1.0 | 20 | Third-order inter-node coupling |
+| Sigmoid slope a_E | 0.5 → 3.0 | 20 | Local nonlinear gain |
+
+Each grid point: T = 10 s, dt = 10⁻³ s, σ_E = 0.01, 2 s transient discarded.
 
 ---
 
-## References
+## Dependencies
 
-- **Neurolib:**  
-  [https://neurolib-dev.github.io/examples/example-0.4-wc-minimal/](https://neurolib-dev.github.io/examples/example-0.4-wc-minimal/)
+| Library | Purpose |
+|---------|---------|
+| `numpy` | Numerical arrays and linear algebra |
+| `scipy` | Covariance estimation, interpolation |
+| `matplotlib` | Static figures |
+| `plotly` | Interactive contour and line plots |
+| `kaleido` | Plotly static image export |
+| `jupyter` | Notebook environment |
 
-- **Wilson-Cowan Model:**  
-  De Candia, Antonio, et al. *Critical Behaviour of the Stochastic Wilson-Cowan Model.*  
-  *PLOS Computational Biology,* 17(8), e1008884, 2021.  
-  [https://doi.org/10.1371/journal.pcbi.1008884](https://doi.org/10.1371/journal.pcbi.1008884)
+---
 
-- **Wilson-Cowan Model and Criticality:**  
-  Alvankar Golpayegan, Hanieh, and Antonio De Candia. *Bistability and Criticality in the Stochastic Wilson-Cowan Model.*  
-  *Physical Review E,* 107(3), 034404, 2023.  
-  [https://doi.org/10.1103/PhysRevE.107.034404](https://doi.org/10.1103/PhysRevE.107.034404)
+## Authors
 
-- **Brain Criticality / Avalanches:**  
-  Larremore, Daniel B., et al. *Statistical Properties of Avalanches in Networks.*  
-  *Physical Review E,* 85(6), 066131, 2012.  
-  [https://doi.org/10.1103/PhysRevE.85.066131](https://doi.org/10.1103/PhysRevE.85.066131)
-
-- **Higher-Order Interactions:**  
-  Hindriks, Rikkert, et al. *Higher‐order Functional Connectivity Analysis of Resting‐state Functional Magnetic Resonance Imaging Data Using Multivariate Cumulants.*  
-  *Human Brain Mapping,* 45(5), e26663, 2024.  
-  [https://doi.org/10.1002/hbm.26663](https://doi.org/10.1002/hbm.26663)
+| Name | Affiliation |
+|------|-------------|
+| **Diego Hernández** | CERVO Brain Research Center, Université Laval, Canada; Dept. of Systems and Computing Engineering, Universidad Nacional de Colombia, Colombia |
+| **Gorka Zamora-López** | Dept. of Complex Systems, Institute of Computer Science, Czech Academy of Sciences, Czech Republic |
+| **Steven Laureys** | CERVO Brain Research Center, Université Laval, Canada; Coma Science Group, GIGA-Consciousness, Université de Liège, Belgium |
+| **Rikkert Hindriks** | Dept. of Mathematics, VU University, Amsterdam, Netherlands |
+| **Francisco Gomez** | Dept. of Mathematics, Universidad Nacional de Colombia, Colombia; CERVO Brain Research Center, Université Laval, Canada |
+| **Prejaas K.B. Tewarie** | CERVO Brain Research Center, Université Laval, Canada; Sir Peter Mansfield Imaging Centre, University of Nottingham, United Kingdom |
 
 ---
 
 ## Contact
 
-If you have questions, comments, or suggestions about this project, please contact:
+- **Diego Hernández** — dieahernandezcas@unal.edu.co
+- **Prejaas K.B. Tewarie** — Prejaas.KBTewarie@cervo.ulaval.ca
 
-- **Diego Alejandro Hernández Castañeda**  
-  PhD Student, Systems and Computing Engineering  
-  Universidad Nacional de Colombia  
-  Email: dieahernandezcas@unal.edu.co  
+---
 
-- **Prof. Francisco Albeiro Gómez Jaramillo, PhD**  
-  Associate Professor, Mathematics Department  
-  Universidad Nacional de Colombia  
-  Email: fagomezj@unal.edu.co  
+## License
 
-- **Prof. Prejaas Kavish Baldewpersad Tewarie, PhD**  
-  Clinical Physician and Teaching Assistant Grant Holder  
-  CERVO Brain Research Centre, Université Laval  
-  Email: Prejaas.KBTewarie@cervo.ulaval.ca  
+Released under the **MIT License**. See `LICENSE` for details.
+
+---
+
+## References
+
+1. Wilson, H.R. & Cowan, J.D. (1972). Excitatory and inhibitory interactions in localized populations of model neurons. *Biophysical Journal*, 12(1), 1–24.
+2. Battiston, F. et al. (2021). The physics of higher-order interactions in complex systems. *Nature Physics*, 17, 1093–1098.
+3. Bick, C. et al. (2023). What are higher-order networks? *SIAM Review*, 65(3), 686–731.
+4. Hindriks, R. et al. (2024). Higher-order functional connectivity analysis of resting-state fMRI using multivariate cumulants. *Human Brain Mapping*, 45(5), e26663.
+5. Varley, T.F. et al. (2023). Partial entropy decomposition reveals higher-order information structures in human brain activity. *PNAS*, 120(30), e2300888120.
+6. Stramaglia, S. et al. (2021). Quantifying dynamical high-order interdependencies from the O-information. *Physical Review Research*, 3, 033090.
+7. Rosas, F.E. et al. (2022). Disentangling high-order mechanisms and high-order behaviours in complex systems. *Nature Physics*, 18, 476–477.

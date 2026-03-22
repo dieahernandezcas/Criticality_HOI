@@ -1,14 +1,24 @@
-# Core numerical and scientific computing libraries
-numpy
-scipy
-pandas
+# =============================================================================
+# requirements.txt — Criticality_HOI
+# Wilson–Cowan higher-order interactions study
+#
+# Install with:  pip install -r requirements.txt
+# =============================================================================
 
-# Specific for the Wilson-Cowan model (based on context)
-neurolib
+# --- Core numerical and scientific computing ---
+numpy>=1.24
+scipy>=1.10
 
-# For plotting and visualizations
-matplotlib
-seaborn
+# --- Interactive and static plotting ---
+matplotlib>=3.7
+plotly>=5.15
+kaleido>=0.2.1          # required for Plotly static image export (PDF, PNG)
 
-# For running Jupyter notebooks (if users will use them directly)
-jupyter
+# --- Jupyter environment ---
+jupyter>=1.0
+jupyterlab>=4.0         # optional: modern notebook interface
+
+# --- Additional utilities ---
+pandas>=2.0             # used for data inspection and CSV I/O
+seaborn>=0.12           # optional: statistical plotting helpers
+tqdm>=4.65              # optional: progress bars in sweeps
