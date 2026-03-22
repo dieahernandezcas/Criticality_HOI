@@ -135,7 +135,7 @@ T = 10.0
 # External drive values (rows of the phase diagram)
 P_values = np.linspace(1.0, 10.0, 20)
 
-# Pairwise coupling strength values (columns of the phase diagram)
+# Second-order coupling strength values (columns of the phase diagram)
 K_values = np.linspace(0.0, 1.0, 20)
 
 # Third-order coupling strength values (used for HOI sweeps)
@@ -145,7 +145,7 @@ K3_values = np.linspace(0.0, 1.0, 20)
 # Network topology
 # ---------------------------------------------------------------------------
 
-# All-to-all pairwise structural connectivity matrix (no self-connections)
+# All-to-all second-order structural connectivity matrix (no self-connections)
 M = np.array([
     [0.0, 1.0, 1.0],
     [1.0, 0.0, 1.0],

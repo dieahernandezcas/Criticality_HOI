@@ -8,7 +8,7 @@ simulations described in:
     nonlinear dynamics without explicit higher-order coupling."
 
 This module defines:
-    - The all-to-all pairwise connectivity matrix M (3×3).
+    - The all-to-all second-order connectivity matrix M (3×3).
     - The higher-order interaction tensor T_ho (3×3×3), derived from M.
     - Node-specific biophysical parameters (time constants, local connectivity
       weights, sigmoid slope, external input Q).
@@ -109,8 +109,8 @@ def energy_ratio(matrix: np.ndarray, threshold: float = 0.95):
 # Number of Wilson–Cowan nodes
 N_nodes = 3
 
-# All-to-all pairwise structural connectivity matrix (no self-connections).
-# M[i, j] = 1 means node j provides pairwise input to node i.
+# All-to-all second-order structural connectivity matrix (no self-connections).
+# M[i, j] = 1 means node j provides second-order input to node i.
 M = np.array([
     [0.0, 1.0, 1.0],
     [1.0, 0.0, 1.0],

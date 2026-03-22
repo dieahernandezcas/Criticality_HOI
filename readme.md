@@ -18,9 +18,9 @@ neuroscience and complex-systems theory:
 
 > **Do higher-order statistical dependencies in neural signals require
 > explicit higher-order synaptic interactions, or can they emerge generically
-> from nonlinear pairwise dynamics?**
+> from nonlinear second-order dynamics?**
 
-We compare four coupling architectures — two pairwise (additive and diffusive)
+We compare four coupling architectures — two second-order (additive and diffusive)
 and two explicit third-order (additive and diffusive) — and quantify
 higher-order statistical structure using **Total Correlation minus Dual Total
 Correlation (TC − DTC)** and **third-order cumulants (κ₁₂₃)**. We vary
@@ -29,7 +29,7 @@ sigmoid slope *a_E* (local nonlinear gain).
 
 ### Main finding
 
-In the oscillatory (post-Hopf) regime, the pairwise additive model produces
+In the oscillatory (post-Hopf) regime, the second-order additive model produces
 TC − DTC values that are on average **16-fold** above the fixed-point
 baseline, reaching magnitudes comparable to the explicit third-order model.
 Increasing *a_E* amplifies TC − DTC up to **28-fold**, independently of
@@ -54,16 +54,16 @@ Criticality_HOI/
 │   └── visualization.py              # Matplotlib + Plotly plotting utilities
 │
 ├── Notebook/                         # Jupyter notebooks for all experiments
-│   ├── W_C_Pairwise.ipynb            # Pairwise additive: (P, K) sweep
-│   ├── W_C_Pairwise_Diffusive.ipynb  # Pairwise diffusive: (P, K) sweep
-│   ├── W_C_Coupling.ipynb            # Third-order additive: (P, K) sweep
-│   ├── W_C_Coupling_Diffusive.ipynb  # Third-order diffusive: (P, K) sweep
-│   ├── W_C_Pairwise_Lines.ipynb      # Pairwise additive: metric curves vs K
-│   ├── W_C_Pairwise_Diffusive_Lines.ipynb
-│   ├── W_C_Coupling_Lines.ipynb
-│   ├── W_C_Coupling_Diffusive_Lines.ipynb
-│   ├── W_C_Pairwise_a+k.ipynb        # Pairwise additive: a_E–K sweep
-│   ├── W_C_Coupling_a+k.ipynb        # Third-order additive: a_E–K sweep
+│   ├── W_C_2nd_Order.ipynb            # Second-order additive: (P, K) sweep
+│   ├── W_C_2nd_Order_Diffusive.ipynb  # Second-order diffusive: (P, K) sweep
+│   ├── W_C_3rd_Order.ipynb            # Third-order additive: (P, K) sweep
+│   ├── W_C_3rd_Order_Diffusive.ipynb  # Third-order diffusive: (P, K) sweep
+│   ├── W_C_2nd_Order_Lines.ipynb      # Second-order additive: metric curves vs K
+│   ├── W_C_2nd_Order_Diffusive_Lines.ipynb
+│   ├── W_C_3rd_Order_Lines.ipynb
+│   ├── W_C_3rd_Order_Diffusive_Lines.ipynb
+│   ├── W_C_2nd_Order_a+k.ipynb        # Second-order additive: a_E–K sweep
+│   ├── W_C_3rd_Order_a+k.ipynb        # Third-order additive: a_E–K sweep
 │   ├── Results_comparisons.ipynb     # Load saved results, generate paper figures
 │   └── Test.ipynb                    # Quick exploration / sanity checks
 │
@@ -112,8 +112,8 @@ $$\tau_I^{(i)} \dot{I}_i = -I_i + S\!\left(c_{IE}^{(i)} E_i - c_{II}^{(i)} I_i +
 
 | Architecture | Label | Coupling term |
 |---|---|---|
-| Pairwise additive | PA | K Σⱼ Mᵢⱼ Eⱼ |
-| Pairwise diffusive | PD | K Σⱼ Mᵢⱼ (Eⱼ − Eᵢ) |
+| Second-order additive | PA | K Σⱼ Mᵢⱼ Eⱼ |
+| Second-order diffusive | PD | K Σⱼ Mᵢⱼ (Eⱼ − Eᵢ) |
 | Third-order additive | TA | K₃ Σⱼₖ Tᵢⱼₖ Eⱼ Eₖ |
 | Third-order diffusive | TD | K₃ Σⱼₖ Tᵢⱼₖ (Eⱼ−Eᵢ)(Eₖ−Eᵢ) |
 
@@ -171,12 +171,12 @@ for reproducing the paper figures is:
 
 | Step | Notebook | Output file |
 |------|----------|-------------|
-| 1 | `W_C_Pairwise.ipynb` | `results/metrics_Pairwise_noise.npz` |
-| 2 | `W_C_Pairwise_Diffusive.ipynb` | `results/metrics_Pairwise_diffusive_noise.npz` |
-| 3 | `W_C_Coupling.ipynb` | `results/metrics_Coupling_noise.npz` |
-| 4 | `W_C_Coupling_Diffusive.ipynb` | `results/metrics_Coupling_diffusive_noise.npz` |
-| 5 | `W_C_Pairwise_a+k.ipynb` | `results/metrics_Pairwise_noise_a.npz` |
-| 6 | `W_C_Coupling_a+k.ipynb` | `results/metrics_Coupling_noise_a.npz` |
+| 1 | `W_C_2nd_Order.ipynb` | `results/metrics_Pairwise_noise.npz` |
+| 2 | `W_C_2nd_Order_Diffusive.ipynb` | `results/metrics_Pairwise_diffusive_noise.npz` |
+| 3 | `W_C_3rd_Order.ipynb` | `results/metrics_Coupling_noise.npz` |
+| 4 | `W_C_3rd_Order_Diffusive.ipynb` | `results/metrics_Coupling_diffusive_noise.npz` |
+| 5 | `W_C_2nd_Order_a+k.ipynb` | `results/metrics_Pairwise_noise_a.npz` |
+| 6 | `W_C_3rd_Order_a+k.ipynb` | `results/metrics_Coupling_noise_a.npz` |
 | 7 | `Results_comparisons.ipynb` | `results/fig1_PK_additive.pdf`, etc. |
 
 > **Note:** Pre-computed `.npz` files are already included in `results/`,
@@ -198,7 +198,7 @@ import numpy as np
 # Initial condition
 state0 = 0.1 * np.random.randn(2 * N_nodes)
 
-# Run stochastic simulation (pairwise additive, P=5, K=0.4)
+# Run stochastic simulation (second-order additive, P=5, K=0.4)
 t, states = simulate_wc_stochastic(state0, P=5.0, K=0.4, M=M, T=20, dt=dt)
 
 # Discard 2 s transient, extract excitatory time series
@@ -220,7 +220,7 @@ The phase diagrams cover the following grids:
 | Parameter | Range | Steps | Description |
 |-----------|-------|-------|-------------|
 | External drive P | 1.0 → 10.0 | 20 | Controls proximity to Hopf bifurcation |
-| Coupling strength K | 0.0 → 1.0 | 20 | Pairwise inter-node coupling |
+| Coupling strength K | 0.0 → 1.0 | 20 | Second-order inter-node coupling |
 | Coupling strength K₃ | 0.0 → 1.0 | 20 | Third-order inter-node coupling |
 | Sigmoid slope a_E | 0.5 → 3.0 | 20 | Local nonlinear gain |
 

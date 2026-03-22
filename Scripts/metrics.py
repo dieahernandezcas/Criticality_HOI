@@ -253,7 +253,7 @@ def powercorr(X: np.ndarray) -> float:
     # Third-order product moment ⟨x1 x2 x3, x1* x2* x3*⟩
     p1 = np.mean((x1 * x2 * x3) * np.conj(x1 * x2 * x3))
 
-    # Second-order terms (all 9 pairwise combinations of products)
+    # Second-order terms (all 9 combinations of products)
     p2 = np.zeros((3, 3))
     p2[0, 0] = np.mean((x1 * x2) * np.conj(x1 * x2)) * np.mean(x3 * np.conj(x3))
     p2[0, 1] = np.mean((x1 * x2) * np.conj(x2 * x3)) * np.mean(x3 * np.conj(x1))

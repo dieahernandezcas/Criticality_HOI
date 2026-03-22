@@ -70,12 +70,12 @@ def rk4_step(f, state: np.ndarray, dt: float, *args) -> np.ndarray:
 
 
 # ===========================================================================
-# Pairwise additive coupling  — deterministic and stochastic
+# Second-order additive coupling  — deterministic and stochastic
 # ===========================================================================
 
 def simulate_wc(state0: np.ndarray, P, K: float, M: np.ndarray,
                 T: float, dt: float):
-    """Deterministic simulation with pairwise additive coupling.
+    """Deterministic simulation with second-order additive coupling.
 
     Parameters
     ----------
@@ -84,7 +84,7 @@ def simulate_wc(state0: np.ndarray, P, K: float, M: np.ndarray,
     P : float or np.ndarray, shape (N,)
         External drive.
     K : float
-        Pairwise coupling strength.
+        Second-order coupling strength.
     M : np.ndarray, shape (N, N)
         Structural connectivity matrix.
     T : float
@@ -111,7 +111,7 @@ def simulate_wc(state0: np.ndarray, P, K: float, M: np.ndarray,
 
 def simulate_wc_stochastic(state0: np.ndarray, P, K: float, M: np.ndarray,
                             T: float, dt: float, sigma_E: float = 0.01):
-    """Stochastic simulation with pairwise additive coupling (Euler–Maruyama).
+    """Stochastic simulation with second-order additive coupling (Euler–Maruyama).
 
     Adds additive Gaussian noise to the excitatory population:
         E_i(t + dt) = E_i(t) + dE_i/dt * dt + σ_E * √dt * ξ_i
@@ -159,12 +159,12 @@ def simulate_wc_stochastic(state0: np.ndarray, P, K: float, M: np.ndarray,
 
 
 # ===========================================================================
-# Pairwise diffusive coupling  — deterministic and stochastic
+# Second-order diffusive coupling  — deterministic and stochastic
 # ===========================================================================
 
 def simulate_wc_additive(state0: np.ndarray, P, K: float, M: np.ndarray,
                           T: float, dt: float):
-    """Deterministic simulation with pairwise diffusive coupling.
+    """Deterministic simulation with second-order diffusive coupling.
 
     Parameters
     ----------
@@ -195,7 +195,7 @@ def simulate_wc_additive(state0: np.ndarray, P, K: float, M: np.ndarray,
 def simulate_wc_additive_stochastic(state0: np.ndarray, P, K: float,
                                      M: np.ndarray, T: float, dt: float,
                                      sigma_E: float = 0.01):
-    """Stochastic simulation with pairwise diffusive coupling (Euler–Maruyama).
+    """Stochastic simulation with second-order diffusive coupling (Euler–Maruyama).
 
     Parameters
     ----------
@@ -398,7 +398,7 @@ def simulate_wc_higher_order_additive_stochastic(state0: np.ndarray, P,
 def simulate_wc_stochastic_a(state0: np.ndarray, A, K: float, M: np.ndarray,
                               T: float, dt: float,
                               sigma_E: float = 0.01, P: float = 7):
-    """Stochastic pairwise additive simulation with a free sigmoid slope A.
+    """Stochastic second-order additive simulation with a free sigmoid slope A.
 
     Used for the a_E–K phase diagrams (Fig. 3 of the manuscript).
 
@@ -408,7 +408,7 @@ def simulate_wc_stochastic_a(state0: np.ndarray, A, K: float, M: np.ndarray,
     A : float or np.ndarray, shape (N,)
         Sigmoid slope for the excitatory population.
     K : float
-        Pairwise coupling strength.
+        Second-order coupling strength.
     M : np.ndarray, shape (N, N)
     T : float
     dt : float

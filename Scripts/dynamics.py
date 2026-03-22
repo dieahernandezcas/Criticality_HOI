@@ -13,8 +13,8 @@ a numerical integrator (e.g., ``rk4_step`` in simulation.py).
 
 Coupling architectures implemented
 -----------------------------------
-1. ``wc_rhs``                        — Pairwise additive (PA)
-2. ``wc_rhs_additive``               — Pairwise diffusive (PD)
+1. ``wc_rhs``                        — Second-order additive (PA)
+2. ``wc_rhs_additive``               — Second-order diffusive (PD)
 3. ``wc_rhs_higher_order``           — Third-order additive (TA)
 4. ``wc_rhs_higher_order_additive``  — Third-order diffusive (TD)
 
@@ -63,11 +63,11 @@ def S(x: float, a: float, theta: float) -> float:
 
 
 # ---------------------------------------------------------------------------
-# Pairwise additive coupling  [Eq. (1) in the manuscript]
+# Second-order additive coupling  [Eq. (1) in the manuscript]
 # ---------------------------------------------------------------------------
 
 def wc_rhs(state: np.ndarray, P, K: float, M: np.ndarray) -> np.ndarray:
-    """RHS of the Wilson–Cowan ODE with *pairwise additive* coupling.
+    """RHS of the Wilson–Cowan ODE with *second-order additive* coupling.
 
     The excitatory coupling term is:
         C_i = K * sum_j M_ij * E_j
@@ -82,7 +82,7 @@ def wc_rhs(state: np.ndarray, P, K: float, M: np.ndarray) -> np.ndarray:
     P : float or np.ndarray, shape (N,)
         External drive.  Scalar applies the same drive to every node.
     K : float
-        Global pairwise coupling strength.
+        Global second-order coupling strength.
     M : np.ndarray, shape (N, N)
         Binary (or weighted) structural connectivity matrix.
 
@@ -129,11 +129,11 @@ def wc_rhs(state: np.ndarray, P, K: float, M: np.ndarray) -> np.ndarray:
 
 
 # ---------------------------------------------------------------------------
-# Pairwise diffusive coupling  [Eq. (2) in the manuscript]
+# Second-order diffusive coupling  [Eq. (2) in the manuscript]
 # ---------------------------------------------------------------------------
 
 def wc_rhs_additive(state: np.ndarray, P, K: float, M: np.ndarray) -> np.ndarray:
-    """RHS of the Wilson–Cowan ODE with *pairwise diffusive* coupling.
+    """RHS of the Wilson–Cowan ODE with *second-order diffusive* coupling.
 
     The diffusive coupling term is:
         C_i = K * sum_j M_ij * (E_j - E_i) = K * [(M @ E)_i - d_i * E_i]
@@ -334,7 +334,7 @@ def wc_rhs_higher_order_additive(state: np.ndarray, P, K3: float,
 
 def wc_rhs_a(state: np.ndarray, A, K: float, M: np.ndarray,
               P: float = 7) -> np.ndarray:
-    """Pairwise additive RHS with a free global sigmoid slope A.
+    """Second-order additive RHS with a free global sigmoid slope A.
 
     Identical to ``wc_rhs`` but overrides the per-node aE with the scalar
     (or per-node array) *A*.  External drive P is fixed (default P = 7).
@@ -345,7 +345,7 @@ def wc_rhs_a(state: np.ndarray, A, K: float, M: np.ndarray,
     A : float or np.ndarray, shape (N,)
         Sigmoid slope to apply to the excitatory population.
     K : float
-        Pairwise coupling strength.
+        Second-order coupling strength.
     M : np.ndarray, shape (N, N)
     P : float, optional
         Fixed external drive (default 7).

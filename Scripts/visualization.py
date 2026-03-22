@@ -84,7 +84,7 @@ def plot_detailed_signals(t: np.ndarray, states: np.ndarray,
     P_sim : float or None, optional
         External drive used (for labelling the figure title).
     K_sim : float or None, optional
-        Pairwise coupling strength (for labelling).
+        Second-order coupling strength (for labelling).
     K3_sim : float or None, optional
         Higher-order coupling strength (for labelling).
     transient_time : float, optional
