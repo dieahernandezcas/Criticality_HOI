@@ -449,6 +449,126 @@ def wc_rhs_higher_order_a(state: np.ndarray, A, K3: float,
 
 
 # ---------------------------------------------------------------------------
+# Diffusive sigmoid-slope sweep variants (a_E free, P fixed)
+# ---------------------------------------------------------------------------
+
+def wc_rhs_additive_a(state: np.ndarray, A, K: float, M: np.ndarray,
+                       P: float = 7) -> np.ndarray:
+    """Second-order diffusive RHS with a free global sigmoid slope A.
+
+    Identical to ``wc_rhs_additive`` but overrides the per-node aE with the
+    scalar (or per-node array) *A*.  External drive P is fixed (default 7).
+
+    Parameters
+    ----------
+    state : np.ndarray, shape (2N,)
+    A : float or np.ndarray, shape (N,)
+        Sigmoid slope for the excitatory population.
+    K : float
+        Second-order coupling strength.
+    M : np.ndarray, shape (N, N)
+    P : float, optional
+        Fixed external drive (default 7).
+
+    Returns
+    -------
+    np.ndarray, shape (2N,)
+    """
+    N = M.shape[0]
+    E = state[:N]
+    I = state[N:]
+
+    degree = M.sum(axis=1)
+    coupling = K * (M @ E - degree * E)
+
+    dE_dt = np.zeros(N)
+    dI_dt = np.zeros(N)
+
+    for i in range(N):
+        p = param_nodes[i]
+        A_i = A if np.isscalar(A) else A[i]
+
+        dE_dt[i] = (
+            -E[i]
+            + S(
+                p["cEE"] * E[i] - p["cEI"] * I[i] + P + coupling[i],
+                A_i,
+                p["thetaE"],
+            )
+        ) / p["tauE"]
+
+        dI_dt[i] = (
+            -I[i]
+            + S(
+                p["cIE"] * E[i] - p["cII"] * I[i] + p["Q"],
+                p["aI"],
+                p["thetaI"],
+            )
+        ) / p["tauI"]
+
+    return np.concatenate([dE_dt, dI_dt])
+
+
+def wc_rhs_higher_order_additive_a(state: np.ndarray, A, K3: float,
+                                     T_ho: np.ndarray,
+                                     P: float = 7) -> np.ndarray:
+    """Third-order diffusive RHS with a free global sigmoid slope A.
+
+    Identical to ``wc_rhs_higher_order_additive`` but overrides the per-node
+    aE with the scalar *A*.  External drive P is fixed (default 7).
+
+    Parameters
+    ----------
+    state : np.ndarray, shape (2N,)
+    A : float or np.ndarray, shape (N,)
+        Sigmoid slope for the excitatory population.
+    K3 : float
+        Third-order coupling strength.
+    T_ho : np.ndarray, shape (N, N, N)
+    P : float, optional
+        Fixed external drive (default 7).
+
+    Returns
+    -------
+    np.ndarray, shape (2N,)
+    """
+    N = T_ho.shape[0]
+    E = state[:N]
+    I = state[N:]
+
+    dE_dt = np.zeros(N)
+    dI_dt = np.zeros(N)
+
+    for i in range(N):
+        p = param_nodes[i]
+        A_i = A if np.isscalar(A) else A[i]
+
+        Ti = T_ho[i]
+        diff = E - E[i]
+        higher_order_input = diff @ Ti @ diff
+
+        dE_dt[i] = (
+            -E[i]
+            + S(
+                p["cEE"] * E[i] - p["cEI"] * I[i] + P + K3 * higher_order_input,
+                A_i,
+                p["thetaE"],
+            )
+        ) / p["tauE"]
+
+        dI_dt[i] = (
+            -I[i]
+            + S(
+                p["cIE"] * E[i] - p["cII"] * I[i] + p["Q"],
+                p["aI"],
+                p["thetaI"],
+            )
+        ) / p["tauI"]
+
+    return np.concatenate([dE_dt, dI_dt])
+
+
+# ---------------------------------------------------------------------------
 # Numerical Jacobian  (for stability / bifurcation analysis)
 # ---------------------------------------------------------------------------
 

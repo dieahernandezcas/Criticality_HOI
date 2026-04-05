@@ -41,6 +41,8 @@ Varley et al. (2023), Stramaglia et al. (2021), Hindriks et al. (2024).
 import numpy as np
 from scipy.ndimage import generic_filter
 from scipy.interpolate import griddata
+from scipy.special import digamma
+from scipy.spatial import KDTree
 
 
 # ---------------------------------------------------------------------------
@@ -344,3 +346,104 @@ def clean_rowwise_signed(matrix: np.ndarray, n_std: float = 2) -> np.ndarray:
         cleaned[i, :] = row
 
     return cleaned
+
+
+# ---------------------------------------------------------------------------
+# Non-Gaussian information-theoretic measures: KSG estimator
+# ---------------------------------------------------------------------------
+# The KSG (Kraskov–Stögbauer–Grassberger) estimator is fully non-parametric:
+# it makes NO distributional assumptions whatsoever.  It estimates differential
+# entropy via k-nearest-neighbour distances and from there derives TC, DTC,
+# and O-information.
+#
+# Reference: Kraskov, Stögbauer & Grassberger (2004), Phys. Rev. E 69, 066138.
+# ---------------------------------------------------------------------------
+
+def _ksg_entropy(X: np.ndarray, k: int = 5) -> float:
+    """Kozachenko–Leonenko (KSG) entropy estimator using k-nearest
+    neighbours with the Chebyshev (L∞) norm.
+
+    H(X) ≈ ψ(T) − ψ(k) + d·⟨log(2ε_i)⟩
+
+    where ε_i is the L∞ distance to the k-th neighbour of point i,
+    d is the dimensionality, and ψ is the digamma function.
+
+    Parameters
+    ----------
+    X : np.ndarray, shape (T, d)  or (T,) for 1-D
+    k : int
+        Number of neighbours.
+
+    Returns
+    -------
+    float   Entropy estimate in nats.
+
+    References
+    ----------
+    Kraskov, Stögbauer & Grassberger (2004), Phys. Rev. E 69, 066138.
+    """
+    if X.ndim == 1:
+        X = X[:, np.newaxis]
+    T, d = X.shape
+
+    # Build KD-tree with Chebyshev (max-norm) metric
+    tree = KDTree(X)
+    # query k+1 neighbours (the first is the point itself at distance 0)
+    dists, _ = tree.query(X, k=k + 1, p=np.inf)
+    # ε_i = distance to k-th neighbour (index k, since index 0 is self)
+    eps = dists[:, k]
+
+    # Avoid log(0) for duplicate points
+    eps = np.maximum(eps, 1e-15)
+
+    return float(digamma(T) - digamma(k) + d * np.mean(np.log(2.0 * eps)))
+
+
+def TC_ksg(X: np.ndarray, k: int = 5) -> float:
+    """Total Correlation via KSG entropy estimation.
+
+    TC(X) = Σ_i H(X_i) − H(X_1, …, X_n)
+
+    Parameters
+    ----------
+    X : np.ndarray, shape (T, n)
+    k : int
+        Number of neighbours for entropy estimation.
+
+    Returns
+    -------
+    float   TC in nats.
+    """
+    n = X.shape[1]
+    H_marginals = sum(_ksg_entropy(X[:, i], k=k) for i in range(n))
+    H_joint = _ksg_entropy(X, k=k)
+    return H_marginals - H_joint
+
+
+def DTC_ksg(X: np.ndarray, k: int = 5) -> float:
+    """Dual Total Correlation via KSG entropy estimation.
+
+    DTC(X) = Σ_i H(X_{−i}) − (n−1) H(X_1, …, X_n)
+
+    Parameters
+    ----------
+    X : np.ndarray, shape (T, n)
+    k : int
+
+    Returns
+    -------
+    float   DTC in nats.
+    """
+    n = X.shape[1]
+    indices = np.arange(n)
+    H_leave_one_out = sum(
+        _ksg_entropy(X[:, np.delete(indices, i)], k=k)
+        for i in range(n)
+    )
+    H_joint = _ksg_entropy(X, k=k)
+    return H_leave_one_out - (n - 1) * H_joint
+
+
+def Oinfo_ksg(X: np.ndarray, k: int = 5) -> float:
+    """O-information (TC − DTC) via KSG."""
+    return TC_ksg(X, k=k) - DTC_ksg(X, k=k)

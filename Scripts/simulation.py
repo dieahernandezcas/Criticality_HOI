@@ -33,6 +33,8 @@ from .dynamics import (
     wc_rhs_higher_order_additive,
     wc_rhs_a,
     wc_rhs_higher_order_a,
+    wc_rhs_additive_a,
+    wc_rhs_higher_order_additive_a,
 )
 from .parameters import *
 
@@ -477,6 +479,107 @@ def simulate_wc_higher_order_stochastic_a(state0: np.ndarray, A, K3: float,
         states[i] = rk4_step(wc_rhs_higher_order_a,
                               states[i - 1], dt, A, K3, T_ho, P)
         deriv = wc_rhs_higher_order_a(states[i - 1], A, K3, T_ho, P)
+
+        dE_dt = deriv[:N]
+        dI_dt = deriv[N:]
+
+        dW_E = np.random.randn(N) * np.sqrt(dt)
+
+        E_new = states[i - 1, :N] + dE_dt * dt + sigma_E * dW_E
+        I_new = states[i - 1, N:] + dI_dt * dt
+        states[i] = np.concatenate([E_new, I_new])
+
+    return t, states
+
+
+# ===========================================================================
+# Diffusive sigmoid-slope sweep variants  (A and K as free parameters, P fixed)
+# ===========================================================================
+
+def simulate_wc_additive_stochastic_a(state0: np.ndarray, A, K: float,
+                                       M: np.ndarray, T: float, dt: float,
+                                       sigma_E: float = 0.01,
+                                       P: float = 7):
+    """Stochastic second-order diffusive simulation with a free sigmoid slope A.
+
+    Used for the a_E–K phase diagrams of the diffusive model.
+
+    Parameters
+    ----------
+    state0 : np.ndarray, shape (2N,)
+    A : float or np.ndarray, shape (N,)
+        Sigmoid slope for the excitatory population.
+    K : float
+        Second-order coupling strength.
+    M : np.ndarray, shape (N, N)
+    T : float
+    dt : float
+    sigma_E : float, optional
+    P : float, optional
+        Fixed external drive (default 7).
+
+    Returns
+    -------
+    t : np.ndarray, shape (n_steps,)
+    states : np.ndarray, shape (n_steps, 2N)
+    """
+    n_steps = int(T / dt)
+    N = M.shape[0]
+    states = np.zeros((n_steps, 2 * N))
+    states[0] = state0
+    t = np.linspace(0, T, n_steps)
+
+    for i in range(1, n_steps):
+        states[i] = rk4_step(wc_rhs_additive_a, states[i - 1], dt, A, K, M, P)
+        deriv = wc_rhs_additive_a(states[i - 1], A, K, M, P)
+
+        dE_dt = deriv[:N]
+        dI_dt = deriv[N:]
+
+        dW_E = np.random.randn(N) * np.sqrt(dt)
+
+        E_new = states[i - 1, :N] + dE_dt * dt + sigma_E * dW_E
+        I_new = states[i - 1, N:] + dI_dt * dt
+        states[i] = np.concatenate([E_new, I_new])
+
+    return t, states
+
+
+def simulate_wc_higher_order_additive_stochastic_a(
+        state0: np.ndarray, A, K3: float,
+        T_ho: np.ndarray, T: float, dt: float,
+        sigma_E: float = 0.01, P: float = 7):
+    """Stochastic third-order diffusive simulation with a free sigmoid slope A.
+
+    Parameters
+    ----------
+    state0 : np.ndarray, shape (2N,)
+    A : float or np.ndarray, shape (N,)
+        Sigmoid slope for the excitatory population.
+    K3 : float
+        Third-order coupling strength.
+    T_ho : np.ndarray, shape (N, N, N)
+    T : float
+    dt : float
+    sigma_E : float, optional
+    P : float, optional
+        Fixed external drive (default 7).
+
+    Returns
+    -------
+    t : np.ndarray, shape (n_steps,)
+    states : np.ndarray, shape (n_steps, 2N)
+    """
+    n_steps = int(T / dt)
+    N = T_ho.shape[0]
+    states = np.zeros((n_steps, 2 * N))
+    states[0] = state0
+    t = np.linspace(0, T, n_steps)
+
+    for i in range(1, n_steps):
+        states[i] = rk4_step(wc_rhs_higher_order_additive_a,
+                              states[i - 1], dt, A, K3, T_ho, P)
+        deriv = wc_rhs_higher_order_additive_a(states[i - 1], A, K3, T_ho, P)
 
         dE_dt = deriv[:N]
         dI_dt = deriv[N:]
